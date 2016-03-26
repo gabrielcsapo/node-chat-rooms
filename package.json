@@ -1,0 +1,19 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "description": "## provision",
+  "main": "index.js",
+  "scripts": {
+    "setup": "sh provision.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "openbadge": "^1.0.3",
+    "mongoose": "^4.4.10",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {}
+}
