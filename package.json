@@ -10,10 +10,13 @@
   "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.4.1",
     "express": "^4.13.4",
-    "openbadge": "^1.0.3",
+    "jade": "^1.11.0",
     "mongoose": "^4.4.10",
-    "socket.io": "^1.4.5"
+    "openbadge": "^1.0.3",
+    "socket.io": "^1.4.5",
+    "socket.io-events": "^0.4.6"
   },
   "devDependencies": {}
 }
