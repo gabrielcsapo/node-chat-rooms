@@ -17,7 +17,11 @@ html
   body
     ul(id="messages")
     if(user)
+        form(class="form" id="chat" action="")
+          input(id="message" autocomplete="off")
         script.
+            var room = "#{room}";
+            var socket = io();
             socket.on('connect', function () {
                 socket.emit(room + ':connection', '#{user.username}');
             });
@@ -28,8 +32,6 @@ html
                 chatInput.value = '';
                 return false;
             });
-        form(class="form" id="chat" action="")
-          input(id="message" autocomplete="off")
     else
         div(class="links")
             a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
