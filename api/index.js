@@ -1,4 +1,4 @@
-module.exports = function(app, io) {
+module.exports = function(app, io, passport) {
     var router = require('socket.io-events')();
 
     var db = require('../lib/db').connection
@@ -24,6 +24,6 @@ module.exports = function(app, io) {
     });
     io.use(router);
 
-    var routes = require('./routes')(app);
+    var routes = require('./routes')(app, passport);
 
 }

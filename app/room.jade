@@ -3,37 +3,47 @@ html
     style.
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font: 13px Helvetica, Arial; }
-        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+        .form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+        .form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+        .form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
+        .links {position: absolute; bottom: 0; width:100%;}
+        .links a {display: inline-block; width:50%; padding:10px; text-decoration: none; text-align:center;}
+        .links a.login {background-color: #7eaeff; color: #fff;}
+        .links a.signup {background-color: #74f170; color: #fff;}
     script(src="/socket.io/socket.io.js")
     title= title
   body
     ul(id="messages")
-    form(id="chat" action="")
-      input(id="message" autocomplete="off")
-    script.
-        var room = "#{room}";
-        var socket = io();
-        document.querySelector("#chat").addEventListener("submit", function(e){
-            e.preventDefault();
-            var chatInput = document.getElementById("message");
-            socket.emit(room + ':message', chatInput.value);
-            chatInput.value = '';
-            return false;
-        });
-        socket.on('connect', function () {
-            socket.emit(room + ':connection', socket.id);
-        });
-        socket.on(room + ':message', function(msg){
-            var message = document.createElement('LI');
-                message.innerHTML = msg;
-            document.getElementById('messages').appendChild(message);
-        });
-        socket.on(room + ':connection', function(msg){
-            var message = document.createElement('LI');
-                message.innerHTML = msg;
-            document.getElementById('messages').appendChild(message);
-        });
+    if(user)
+        form(class="form" id="chat" action="")
+          input(id="message" autocomplete="off")
+    else
+        div(class="links")
+            a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
+            a(class="login" href="/login?redirect_uri=#{room}") Login
+    if(user)
+        script.
+            var room = "#{room}";
+            var socket = io();
+            document.querySelector("#chat").addEventListener("submit", function(e){
+                e.preventDefault();
+                var chatInput = document.getElementById("message");
+                socket.emit(room + ':message', chatInput.value);
+                chatInput.value = '';
+                return false;
+            });
+            socket.on('connect', function () {
+                socket.emit(room + ':connection', socket.id);
+            });
+            socket.on(room + ':message', function(msg){
+                var message = document.createElement('LI');
+                    message.innerHTML = msg;
+                document.getElementById('messages').appendChild(message);
+            });
+            socket.on(room + ':connection', function(msg){
+                var message = document.createElement('LI');
+                    message.innerHTML = msg;
+                document.getElementById('messages').appendChild(message);
+            });
