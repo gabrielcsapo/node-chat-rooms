@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 module.exports = function(app, io, passport) {
     var router = require('socket.io-events')();
 
@@ -8,10 +10,10 @@ module.exports = function(app, io, passport) {
     });
     router.on('*:connection', function (socket, args, next) {
         console.log(args);
-        io.emit(args[0], args[1] + ' has connected');
+        io.emit(args[0], args[1]);
     });
     router.on('*:message', function (socket, args, next) {
-        console.log(args);
+        args[1].date = moment().format('LT');
         io.emit(args[0], args[1]);
     });
     router.on('*:disconnect', function (socket, args, next) {
