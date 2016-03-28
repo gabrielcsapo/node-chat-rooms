@@ -1,11 +1,6 @@
 module.exports = function(app, io, passport) {
     var router = require('socket.io-events')();
 
-    var db = require('../lib/db').connection
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
-      console.log("we're connected!");
-    });
     io.on('connection', function (socket) {
       socket.on('error', function(error) {
         console.log(error);
