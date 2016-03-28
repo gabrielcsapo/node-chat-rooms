@@ -9,8 +9,6 @@
 - `/{room}`
     - (renders the chat room window)
 
-## provision
+# install
 
-```
-npm run setup
-```
+`npm install`
