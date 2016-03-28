@@ -6,16 +6,21 @@ module.exports = function(app, io) {
     db.once('open', function() {
       console.log("we're connected!");
     });
-
     io.on('connection', function (socket) {
-      console.log('hello');
+      socket.on('error', function(error) {
+        console.log(error);
+      });
+    });
+    router.on('*:connection', function (socket, args, next) {
+        console.log(args);
+        io.emit(args[0], args[1] + ' has connected');
     });
     router.on('*:message', function (socket, args, next) {
         console.log(args);
-        console.log('message');
+        io.emit(args[0], args[1]);
     });
     router.on('*:disconnect', function (socket, args, next) {
-        console.log('disconnect');
+        console.log(args);
     });
     io.use(router);
 

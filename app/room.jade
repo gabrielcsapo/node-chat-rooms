@@ -8,20 +8,32 @@ html
         form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
-        #messages li:nth-child(odd) { background: #eee; }
     script(src="/socket.io/socket.io.js")
     title= title
   body
-    h1= message
     ul(id="messages")
     form(id="chat" action="")
       input(id="message" autocomplete="off")
     script.
         var room = "#{room}";
-        console.log(room);
         var socket = io();
-        console.log(socket);
         document.querySelector("#chat").addEventListener("submit", function(e){
             e.preventDefault();
-            socket.emit(room + ':message', document.getElementById("message").value);
+            var chatInput = document.getElementById("message");
+            socket.emit(room + ':message', chatInput.value);
+            chatInput.value = '';
+            return false;
+        });
+        socket.on('connect', function () {
+            socket.emit(room + ':connection', socket.id);
+        });
+        socket.on(room + ':message', function(msg){
+            var message = document.createElement('LI');
+                message.innerHTML = msg;
+            document.getElementById('messages').appendChild(message);
+        });
+        socket.on(room + ':connection', function(msg){
+            var message = document.createElement('LI');
+                message.innerHTML = msg;
+            document.getElementById('messages').appendChild(message);
         });
