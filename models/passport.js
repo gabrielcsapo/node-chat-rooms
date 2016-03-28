@@ -18,20 +18,28 @@ module.exports = function(passport) {
         passwordField: 'password',
         passReqToCallback: true
     }, function(req, email, password, done) {
+        console.log(req.body);
+        console.log(email);
         process.nextTick(function() {
             User.findOne({'local.email': email}, function(err, user) {
+
                 if (err) {
-                    req.error = err;
+                    console.log(err);
                     return done(err);
                 }
+                console.log(req.body);
                 if (user) {
-                    return done(null, false, req.error = 'That email is already taken.');
+                    req.error = 'That email is already taken.';
+                    console.log(req.error);
+                    return done(null, false);
                 } else {
                     var user = new User();
+                    user.username = req.body.username;
                     user.local.email = email;
                     user.local.password = user.generateHash(password);
                     user.save(function(err) {
                         if (err) {
+                            console.log(err);
                             throw err;
                         }
                         return done(null, user);

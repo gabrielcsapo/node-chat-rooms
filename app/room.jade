@@ -17,16 +17,10 @@ html
   body
     ul(id="messages")
     if(user)
-        form(class="form" id="chat" action="")
-          input(id="message" autocomplete="off")
-    else
-        div(class="links")
-            a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
-            a(class="login" href="/login?redirect_uri=#{room}") Login
-    if(user)
         script.
-            var room = "#{room}";
-            var socket = io();
+            socket.on('connect', function () {
+                socket.emit(room + ':connection', '#{user.username}');
+            });
             document.querySelector("#chat").addEventListener("submit", function(e){
                 e.preventDefault();
                 var chatInput = document.getElementById("message");
@@ -34,16 +28,22 @@ html
                 chatInput.value = '';
                 return false;
             });
-            socket.on('connect', function () {
-                socket.emit(room + ':connection', socket.id);
-            });
-            socket.on(room + ':message', function(msg){
-                var message = document.createElement('LI');
-                    message.innerHTML = msg;
-                document.getElementById('messages').appendChild(message);
-            });
-            socket.on(room + ':connection', function(msg){
-                var message = document.createElement('LI');
-                    message.innerHTML = msg;
-                document.getElementById('messages').appendChild(message);
-            });
+        form(class="form" id="chat" action="")
+          input(id="message" autocomplete="off")
+    else
+        div(class="links")
+            a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
+            a(class="login" href="/login?redirect_uri=#{room}") Login
+    script.
+        var room = "#{room}";
+        var socket = io();
+        socket.on(room + ':message', function(msg){
+            var message = document.createElement('LI');
+                message.innerHTML = msg;
+            document.getElementById('messages').appendChild(message);
+        });
+        socket.on(room + ':connection', function(msg){
+            var message = document.createElement('LI');
+                message.innerHTML = msg;
+            document.getElementById('messages').appendChild(message);
+        });
