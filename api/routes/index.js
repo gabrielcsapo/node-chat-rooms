@@ -1,5 +1,6 @@
 var openBadge = require('openbadge');
 var ChatModel = require('../../models/chat');
+var UserModel = require('../../models/user');
 
 var isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -47,6 +48,13 @@ module.exports = function(app, passport) {
                 user: req.user,
                 chats: chats
             });
+        });
+    });
+    app.get('/user/:username/avatar', function(req, res) {
+        var username = req.params.username;
+        UserModel.find({username: username}, function(err, user) {
+            res.set('Content-Type', 'image/svg+xml');
+            res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color +'" x="0" y="0" width="100" height="100"/></svg>');
         });
     });
     app.get('/room/create', isAuthenticated, function(req, res) {

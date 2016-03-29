@@ -34,7 +34,7 @@ module.exports = function(passport) {
                     user.local.email = email;
                     user.local.password = user.generateHash(password);
                     user.settings = {};
-                    user.settings.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+                    user.settings.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
                     user.save(function(err) {
                         if (err) {
                             console.log(err);
@@ -48,25 +48,25 @@ module.exports = function(passport) {
     }));
 
     passport.use('local-login', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true
-        },
-        function(req, email, password, done) { // callback with email and password from our form
-            User.findOne({
-                'local.email': email
-            }, function(err, user) {
-                if (err) {
-                    return done(err);
-                }
-                if (!user) {
-                    return done(null, false, req.error = 'No user found.');
-                }
-                if (!user.isPassword(password)) {
-                    return done(null, false, req.error = 'Oops! Wrong password.');
-                }
-                return done(null, user);
-            });
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function(req, email, password, done) { // callback with email and password from our form
+        User.findOne({
+            'local.email': email
+        }, function(err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false, req.error = 'No user found.');
+            }
+            if (!user.isPassword(password)) {
+                return done(null, false, req.error = 'Oops! Wrong password.');
+            }
+            return done(null, user);
+        });
 
-        }));
+    }));
 };

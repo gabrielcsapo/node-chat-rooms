@@ -13,7 +13,7 @@ html
             for message in messages
                 li
                     div
-                        p(style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;')
+                        img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
                         h3(style='display:inline-block;') #{message.username}
                         small(style='margin-left: 5px;display:inline-block;') #{message.date}
                         p #{message.message}
@@ -38,7 +38,7 @@ html
             for message in messages
                 li
                     div
-                        p(style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;')
+                        img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
                         h3(style='display:inline-block;') #{message.username}
                         small(style='margin-left: 5px;display:inline-block;') #{message.date}
                         p #{message.message}
@@ -52,7 +52,7 @@ html
         socket.on(room + ':message', function(data){
             var message = document.createElement('LI');
             message.innerHTML += "<div>" +
-                "<p style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;'><p>" +
+                "<img src='/user/" + data.username + "/avatar' style='width:35px;height:35px;float:left;margin-right: 5px;'> " +
                 "<h3 style='display:inline-block;'>" + data.username + "</h3>" + "<small style='margin-left: 5px;display:inline-block;'>" + data.date + "</small>" +
                 "<p>" + data.message + "</p>" +
                 "</div>";

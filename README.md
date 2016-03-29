@@ -12,3 +12,9 @@
 # install
 
 `npm install`
+
+# todo
+
+- needs a UI design
+- needs testing
+- needs a cool front-page
