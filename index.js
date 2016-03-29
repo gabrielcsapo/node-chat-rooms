@@ -17,7 +17,11 @@ mongoose.connect(require('./config/db.js').url);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({secret: 'magicmouse'}));
+app.use(session({
+    secret: 'magicmouse',
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./models/passport')(passport);
