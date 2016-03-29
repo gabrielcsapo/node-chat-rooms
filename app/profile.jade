@@ -6,3 +6,6 @@ html
   body
     include ./partials/header
     a(href="room/create") Create A Room
+    ul
+    each chat in chats
+        li= chat.name

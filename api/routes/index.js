@@ -41,7 +41,9 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup'
     }));
     app.get('/profile', isAuthenticated, function(req, res) {
-        res.render('profile', {user: req.user});
+        ChatModel.find({owners: req.user.id}, function(err, chats) {
+            res.render('profile', {user: req.user, chats: chats});
+        });
     });
     app.get('/room/create', isAuthenticated, function(req, res) {
         res.render('roomCreate', {});
