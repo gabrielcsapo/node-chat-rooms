@@ -18,11 +18,8 @@ module.exports = function(passport) {
         passwordField: 'password',
         passReqToCallback: true
     }, function(req, email, password, done) {
-        console.log(req.body);
-        console.log(email);
         process.nextTick(function() {
             User.findOne({'local.email': email}, function(err, user) {
-
                 if (err) {
                     console.log(err);
                     return done(err);

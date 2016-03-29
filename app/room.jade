@@ -16,8 +16,9 @@ html
     script(src="/socket.io/socket.io.js")
     title= title
   body
-    ul(id="messages")
     if(user)
+        include ./partials/header
+        ul(id="messages")
         form(class="form" id="chat" action="")
           input(id="message" autocomplete="off")
         script.
@@ -34,6 +35,7 @@ html
                 return false;
             });
     else
+        ul(id="messages")
         div(class="links")
             a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
             a(class="login" href="/login?redirect_uri=#{room}") Login

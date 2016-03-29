@@ -1,4 +1,13 @@
 var openBadge = require('openbadge');
+var ChatModel = require('../../models/chat');
+
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.session.redirect_uri = req.originalUrl;
+  res.redirect('/login');
+}
 
 module.exports = function(app, passport) {
     app.get('/', function(req, res) {
@@ -11,7 +20,7 @@ module.exports = function(app, passport) {
         if (req.query.redirect_uri) {
             req.session.redirect_uri = req.query.redirect_uri;
         } else {
-            req.session.redirect_uri = '/'
+            req.session.redirect_uri = req.session.redirect_uri || '/'
         }
         res.render('login', {});
     });
@@ -23,7 +32,7 @@ module.exports = function(app, passport) {
         if (req.query.redirect_uri) {
             req.session.redirect_uri = req.query.redirect_uri;
         } else {
-            req.session.redirect_uri = '/'
+            req.session.redirect_uri = req.session.redirect_uri || '/'
         }
         res.render('signup', {});
     });
@@ -31,6 +40,27 @@ module.exports = function(app, passport) {
         successRedirect : '/redirect',
         failureRedirect : '/signup'
     }));
+    app.get('/profile', isAuthenticated, function(req, res) {
+        res.render('profile', {user: req.user});
+    });
+    app.get('/room/create', isAuthenticated, function(req, res) {
+        res.render('roomCreate', {});
+    });
+    app.post('/room/create', isAuthenticated, function(req, res) {
+        if (req.body.room) {
+            var chat = new ChatModel();
+            chat.owners = [req.user.id];
+            chat.name = req.body.room;
+            chat.save(function(err) {
+                if (err) {
+                    res.send({error: err.toString()});
+                }
+                res.redirect('/profile');
+            });
+        } else {
+            res.send({error: 'please specifiy a room'});
+        }
+    });
     app.get('/:room.svg', function(req, res){
         var room = req.params.room;
         openBadge({
@@ -51,6 +81,12 @@ module.exports = function(app, passport) {
     });
     app.get('/:room', function(req, res){
         var room = req.params.room;
-        res.render('room', {title: room, room: room, user: req.user});
+        ChatModel.findOne({name: room}, function(err, chat) {
+            if (chat) {
+                res.render('room', {title: room, room: room, user: req.user});
+            } else {
+                res.render('404', {});
+            }
+        })
     });
 }
