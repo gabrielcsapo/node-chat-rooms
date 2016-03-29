@@ -19,15 +19,12 @@ module.exports = function(passport) {
         passReqToCallback: true
     }, function(req, email, password, done) {
         process.nextTick(function() {
-            User.findOne({'local.email': email}, function(err, user) {
+            User.findOne({'local.email': email}, function(err, _user) {
                 if (err) {
-                    console.log(err);
                     return done(err);
                 }
-                console.log(req.body);
-                if (user) {
+                if (_user) {
                     req.error = 'That email is already taken.';
-                    console.log(req.error);
                     return done(null, false);
                 } else {
                     var user = new User();
@@ -40,11 +37,11 @@ module.exports = function(passport) {
                             throw err;
                         }
                         return done(null, user);
-                    })
+                    });
                 }
             });
         });
-    }))
+    }));
 
     passport.use('local-login', new LocalStrategy({
         usernameField : 'email',
@@ -66,5 +63,4 @@ module.exports = function(passport) {
         });
 
     }));
-
-}
+};

@@ -4,7 +4,7 @@
   "description": "## provision",
   "main": "index.js",
   "scripts": {
-    "preinstall": "sh provision.sh",
+    "preinstall": "sh ./scripts/provision.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",

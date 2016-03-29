@@ -9,7 +9,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("we're connected!");
+    console.log('db connected');
 });
 
 mongoose.connect(require('./config/db.js').url);
@@ -25,13 +25,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 require('./models/passport')(passport);
-app.set('views', './app')
+app.set('views', './app');
 app.set('view engine', 'jade');
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var api = require('./api')(app, io, passport);
+require('./api')(app, io, passport);
 
 server.listen(process.env.PORT || 3000, function() {
-    console.log('chatter listening on localhost:', server.address().port)
+    console.log('chatter listening on localhost:', server.address().port);
 });
