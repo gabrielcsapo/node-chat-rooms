@@ -85,7 +85,7 @@ module.exports = function(app, passport) {
         var room = req.params.room;
         ChatModel.findOne({name: room}, function(err, chat) {
             if (chat) {
-                res.render('room', {title: room, room: room, user: req.user});
+                res.render('room', {title: room, messages: chat.messages, room: room, user: req.user});
             } else {
                 res.render('404', {});
             }

@@ -10,6 +10,14 @@ html
     if(user)
         include ./partials/header
         ul(id="messages")
+            for message in messages
+                li
+                    div
+                        p(style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;')
+                        h3(style='display:inline-block;') #{message.username}
+                        small(style='margin-left: 5px;display:inline-block;') #{message.date}
+                        p #{message.message}
+
         form(class="form" id="chat" action="")
           input(id="message" autocomplete="off")
         script.
@@ -27,6 +35,14 @@ html
             });
     else
         ul(id="messages")
+            for message in messages
+                li
+                    div
+                        p(style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;')
+                        h3(style='display:inline-block;') #{message.username}
+                        small(style='margin-left: 5px;display:inline-block;') #{message.date}
+                        p #{message.message}
+
         div(class="links")
             a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
             a(class="login" href="/login?redirect_uri=#{room}") Login
@@ -38,7 +54,8 @@ html
             message.innerHTML += "<div>" +
                 "<p style='background-color:blue;width:35px;height:35px;float:left;margin-right: 5px;'><p>" +
                 "<h3 style='display:inline-block;'>" + data.username + "</h3>" + "<small style='margin-left: 5px;display:inline-block;'>" + data.date + "</small>" +
-                "<p>" + data.message + "</p>";
+                "<p>" + data.message + "</p>" +
+                "</div>";
             document.getElementById('messages').appendChild(message);
         });
         socket.on(room + ':connection', function(data){

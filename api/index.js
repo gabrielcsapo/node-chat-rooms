@@ -1,3 +1,4 @@
+var ChatModel = require('../models/chat');
 var moment = require('moment');
 
 module.exports = function(app, io, passport) {
@@ -13,6 +14,11 @@ module.exports = function(app, io, passport) {
         io.emit(args[0], args[1]);
     });
     router.on('*:message', function (socket, args, next) {
+        var room = args[0].substring(0, args[0].indexOf(':'));
+        ChatModel.findOne({name: room}, function(err, chat) {
+            chat.messages.push(args[1]);
+            chat.save();
+        });
         args[1].date = moment().format('LT');
         io.emit(args[0], args[1]);
     });
