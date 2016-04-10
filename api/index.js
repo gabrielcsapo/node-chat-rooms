@@ -4,7 +4,7 @@ var moment = require('moment');
 module.exports = function(app, io, passport) {
     var router = require('socket.io-events')();
     require('./routes')(app, passport);
-    
+
     io.on('connection', function(socket) {
         socket.on('error', function(error) {
             console.log(error);

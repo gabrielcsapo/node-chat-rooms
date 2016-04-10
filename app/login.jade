@@ -1,26 +1,26 @@
 html
-  head
-    title Login
-    style
-        include ./styles/login.css
-  body
-    form(id="login" action="/login" method="POST")
-      input(id="email" name="email" placeholder="email" autocomplete="off")
-      input(id="password" type="password" name="password" placeholder="password" autocomplete="off")
-      br
-      button(id="btnSignup" class="flat signup" style="float:left;") Sign Up
-      button(id="btnLogin" class="flat" style="float:right;") Login
-    script.
-        document.getElementById('login').onkeydown = function(e) {
-            e.preventDefault;
-            if (e.keyCode == 13) {
-                document.getElementById("login").submit();
-                return false;
-            } else {
-                return true;
+    head
+        title Login
+        style
+            include ./styles/login.css
+    body
+        form(id="login" action="/login" method="POST")
+            input(id="email" name="email" placeholder="email" autocomplete="off")
+            input(id="password" type="password" name="password" placeholder="password" autocomplete="off")
+            br
+            button(id="btnSignup" class="flat signup" style="float:left;") Sign Up
+            button(id="btnLogin" class="flat" style="float:right;") Login
+        script.
+            document.getElementById('login').onkeydown = function(e) {
+                e.preventDefault;
+                if (e.keyCode == 13) {
+                    document.getElementById("login").submit();
+                    return false;
+                } else {
+                    return true;
+                }
             }
-        }
-        document.getElementById('btnSignup').onclick = function(e) {
-            e.preventDefault();
-            location.href = "/signup";
-        }
+            document.getElementById('btnSignup').onclick = function(e) {
+                e.preventDefault();
+                location.href = "/signup";
+            }

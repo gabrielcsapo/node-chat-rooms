@@ -13,6 +13,12 @@
 
 `npm install`
 
+> install mongo
+
+```
+brew install mongo
+```
+
 # todo
 
 - needs a UI design

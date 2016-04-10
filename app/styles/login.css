@@ -7,28 +7,27 @@ form {
     margin: 0 auto;
 }
 input {
-  display: block;
-  margin: 0;
-  width: 100%;
-  font-family: sans-serif;
-  font-size: 18px;
-  appearance: none;
-  box-shadow: none;
-  border-radius: none;
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 18px;
+    appearance: none;
+    box-shadow: none;
+    border-radius: none;
 }
 input[type="text"]:focus {
-  outline: none;
+    outline: none;
 }
 input {
-  padding: 10px;
-  border: none;
-  border-bottom: solid 2px #c9c9c9;
-  transition: border 0.3s;
+    padding: 10px;
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
 }
-input:focus,
-input.focus {
-outline: none;
-  border-bottom: solid 2px #969696;
+input:focus, input.focus {
+    outline: none;
+    border-bottom: solid 2px #969696;
 }
 button {
     display: inline-block;
@@ -45,12 +44,10 @@ button.flat {
     background-color: #6496c8;
     border: none;
 }
-button.flat:hover,
-button.flat.hover {
+button.flat:hover, button.flat.hover {
     background-color: #346392;
 }
-button.flat:active,
-button.flat.active {
+button.flat:active, button.flat.active {
     background-color: #27496d;
 }
 button.flat.signup {

@@ -1,65 +1,65 @@
 html
-  head
-    style
-        include ./styles/app.css
-    style
-        include ./styles/room.css
-    script(src="/socket.io/socket.io.js")
-    title= title
-  body
-    if(user)
-        include ./partials/header
-        ul(id="messages")
-            for message in messages
-                li
-                    div
-                        img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
-                        h3(style='display:inline-block;') #{message.username}
-                        small(style='margin-left: 5px;display:inline-block;') #{message.date}
-                        p #{message.message}
+    head
+        style
+            include ./styles/app.css
+        style
+            include ./styles/room.css
+        script(src="/socket.io/socket.io.js")
+        title= title
+    body
+        if(user)
+            include ./partials/header
+            ul(id="messages")
+                for message in messages
+                    li
+                        div
+                            img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
+                            h3(style='display:inline-block;') #{message.username}
+                            small(style='margin-left: 5px;display:inline-block;') #{message.date}
+                            p #{message.message}
 
-        form(class="form" id="chat" action="")
-          input(id="message" autocomplete="off")
+            form(class="form" id="chat" action="")
+                input(id="message" autocomplete="off")
+            script.
+                var room = "#{room}";
+                var socket = io();
+                socket.on('connect', function () {
+                    socket.emit(room + ':connection', {username: '#{user.username}'});
+                });
+                document.querySelector("#chat").addEventListener("submit", function(e){
+                    e.preventDefault();
+                    var chatInput = document.getElementById("message");
+                    socket.emit(room + ':message', {message: chatInput.value, username: '#{user.username}'});
+                    chatInput.value = '';
+                    return false;
+                });
+        else
+            ul(id="messages")
+                for message in messages
+                    li
+                        div
+                            img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
+                            h3(style='display:inline-block;') #{message.username}
+                            small(style='margin-left: 5px;display:inline-block;') #{message.date}
+                            p #{message.message}
+
+            div(class="links")
+                a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
+                a(class="login" href="/login?redirect_uri=#{room}") Login
         script.
             var room = "#{room}";
             var socket = io();
-            socket.on('connect', function () {
-                socket.emit(room + ':connection', {username: '#{user.username}'});
+            socket.on(room + ':message', function(data){
+                var message = document.createElement('LI');
+                message.innerHTML += "<div>" +
+                    "<img src='/user/" + data.username + "/avatar' style='width:35px;height:35px;float:left;margin-right: 5px;'> " +
+                    "<h3 style='display:inline-block;'>" + data.username + "</h3>" + "<small style='margin-left: 5px;display:inline-block;'>" + data.date + "</small>" +
+                    "<p>" + data.message + "</p>" +
+                    "</div>";
+                document.getElementById('messages').appendChild(message);
             });
-            document.querySelector("#chat").addEventListener("submit", function(e){
-                e.preventDefault();
-                var chatInput = document.getElementById("message");
-                socket.emit(room + ':message', {message: chatInput.value, username: '#{user.username}'});
-                chatInput.value = '';
-                return false;
+            socket.on(room + ':connection', function(data){
+                var message = document.createElement('LI');
+                    message.innerHTML = data.username + ' has connected';
+                document.getElementById('messages').appendChild(message);
             });
-    else
-        ul(id="messages")
-            for message in messages
-                li
-                    div
-                        img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
-                        h3(style='display:inline-block;') #{message.username}
-                        small(style='margin-left: 5px;display:inline-block;') #{message.date}
-                        p #{message.message}
-
-        div(class="links")
-            a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
-            a(class="login" href="/login?redirect_uri=#{room}") Login
-    script.
-        var room = "#{room}";
-        var socket = io();
-        socket.on(room + ':message', function(data){
-            var message = document.createElement('LI');
-            message.innerHTML += "<div>" +
-                "<img src='/user/" + data.username + "/avatar' style='width:35px;height:35px;float:left;margin-right: 5px;'> " +
-                "<h3 style='display:inline-block;'>" + data.username + "</h3>" + "<small style='margin-left: 5px;display:inline-block;'>" + data.date + "</small>" +
-                "<p>" + data.message + "</p>" +
-                "</div>";
-            document.getElementById('messages').appendChild(message);
-        });
-        socket.on(room + ':connection', function(data){
-            var message = document.createElement('LI');
-                message.innerHTML = data.username + ' has connected';
-            document.getElementById('messages').appendChild(message);
-        });

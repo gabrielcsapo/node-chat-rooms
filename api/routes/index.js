@@ -90,7 +90,7 @@ module.exports = function(app, passport) {
                 shadow: '#fff'
             },
             font: {
-                fontFace: '../../assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                fontFace: '../../app/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
             }
         }, function(err, badgeSvg) {
             res.set('Content-Type', 'image/svg+xml');
