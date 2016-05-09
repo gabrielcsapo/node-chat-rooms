@@ -1,11 +1,11 @@
 {
   "name": "chatter",
   "version": "1.0.0",
-  "description": "## provision",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "preinstall": "sh ./scripts/provision.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "test": "./node_modules/.bin/mocha;"
   },
   "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
   "license": "ISC",
@@ -26,5 +26,9 @@
     "socket.io": "^1.4.6",
     "socket.io-events": "^0.4.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  }
 }
