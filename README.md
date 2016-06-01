@@ -4,7 +4,7 @@
 [![Dependency Status](https://david-dm.org/gabrielcsapo/chatter.svg)](https://david-dm.org/gabrielcsapo/chatter)
 [![devDependency Status](https://david-dm.org/gabrielcsapo/chatter/dev-status.svg)](https://david-dm.org/gabrielcsapo/chatter#info=devDependencies)
 
-> simple one room chats specific one topic of though
+> open chat rooms for the masses :monkey:
 
 # routes
 
