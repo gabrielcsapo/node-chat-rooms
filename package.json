@@ -1,6 +1,6 @@
 {
   "name": "node-chat-rooms",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "open chat rooms for the masses 🐒",
   "main": "index.js",
   "scripts": {
