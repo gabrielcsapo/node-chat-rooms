@@ -21,10 +21,10 @@ module.exports = function(app, io, passport) {
         }, function(err, chat) {
             chat.messages.push(args[1]);
             chat.save();
+            args[1].date = moment().format('LT');
+            io.emit(args[0], args[1]);
+            next();
         });
-        args[1].date = moment().format('LT');
-        io.emit(args[0], args[1]);
-        next();
     });
     router.on('*:disconnect', function(socket, args, next) {
         io.emit(args[0], args[1]);

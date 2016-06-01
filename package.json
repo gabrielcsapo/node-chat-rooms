@@ -1,7 +1,7 @@
 {
-  "name": "chatter",
-  "version": "1.0.0",
-  "description": "## provision",
+  "name": "node-chat-rooms",
+  "version": "0.0.1",
+  "description": "open chat rooms for the masses 🐒",
   "main": "index.js",
   "scripts": {
     "preinstall": "sh ./scripts/provision.sh",
@@ -13,18 +13,25 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
     "bunyan": "^1.8.1",
-    "cookie-parser": "^1.4.1",
-    "ejs": "^2.4.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
     "moment": "^2.13.0",
-    "mongoose": "^4.4.15",
+    "mongoose": "^4.4.19",
     "openbadge": "^1.0.3",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "psychic-ui": "^0.1.1",
     "socket.io": "^1.4.6",
-    "socket.io-events": "^0.4.6"
+    "socket.io-events": "^0.4.6",
+    "underscore": "^1.8.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-screenshot": "^0.2.0",
+    "mocha": "^2.5.3",
+    "supertest": "^1.2.0"
+  }
 }

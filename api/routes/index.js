@@ -1,4 +1,5 @@
 var openBadge = require('openbadge');
+var _ = require('underscore');
 var ChatModel = require('../../models/chat');
 var UserModel = require('../../models/user');
 
@@ -21,7 +22,9 @@ var redirectNext = function(req, res, next) {
 
 module.exports = function(app, passport) {
     app.get('/', function(req, res) {
-        res.render('homepage', {});
+        res.render('home', {
+            user: req.user
+        });
     });
     app.get('/redirect', function(req, res) {
         res.redirect(req.session.redirect_uri);
@@ -33,20 +36,20 @@ module.exports = function(app, passport) {
         successRedirect: '/redirect',
         failureRedirect: '/login'
     }));
-    app.get('/signup', redirectNext, function(req, res) {
-        res.render('signup', {});
+    app.get('/register', redirectNext, function(req, res) {
+        res.render('register', {});
     });
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/register', passport.authenticate('local-signup', {
         successRedirect: '/redirect',
-        failureRedirect: '/signup'
+        failureRedirect: '/register'
     }));
     app.get('/profile', isAuthenticated, function(req, res) {
         ChatModel.find({
             owners: req.user.id
-        }, function(err, chats) {
+        }, function(err, rooms) {
             res.render('profile', {
                 user: req.user,
-                chats: chats
+                rooms: rooms
             });
         });
     });
@@ -55,6 +58,11 @@ module.exports = function(app, passport) {
         UserModel.find({username: username}, function(err, user) {
             res.set('Content-Type', 'image/svg+xml');
             res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color +'" x="0" y="0" width="100" height="100"/></svg>');
+        });
+    });
+    app.get('/rooms', function(req, res) {
+        ChatModel.find({}, function(err, rooms) {
+            res.render('rooms', {rooms: _.pluck(rooms, 'name')});
         });
     });
     app.get('/room/create', isAuthenticated, function(req, res) {

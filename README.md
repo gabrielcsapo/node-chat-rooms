@@ -1,8 +1,11 @@
-# chatter
+# node-chat-rooms
 
-[![Build Status](https://travis-ci.org/gabrielcsapo/chatter.svg?branch=master)](https://travis-ci.org/gabrielcsapo/chatter)
-[![Dependency Status](https://david-dm.org/gabrielcsapo/chatter.svg)](https://david-dm.org/gabrielcsapo/chatter)
-[![devDependency Status](https://david-dm.org/gabrielcsapo/chatter/dev-status.svg)](https://david-dm.org/gabrielcsapo/chatter#info=devDependencies)
+[![Npm Version](https://img.shields.io/npm/v/node-chat-rooms.svg)](https://www.npmjs.com/package/node-chat-rooms)
+[![Build Status](https://travis-ci.org/gabrielcsapo/node-chat-rooms.svg?branch=master)](https://travis-ci.org/gabrielcsapo/node-chat-rooms)
+[![Dependency Status](https://david-dm.org/gabrielcsapo/node-chat-rooms.svg)](https://david-dm.org/gabrielcsapo/node-chat-rooms)
+[![devDependency Status](https://david-dm.org/gabrielcsapo/node-chat-rooms/dev-status.svg)](https://david-dm.org/gabrielcsapo/node-chat-rooms#info=devDependencies)
+[![npm](https://img.shields.io/npm/dt/node-chat-rooms.svg)]()
+[![npm](https://img.shields.io/npm/dm/node-chat-rooms.svg)]()
 
 > simple one room chats specific one topic of though
 

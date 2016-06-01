@@ -9,7 +9,7 @@ var db = mongoose.connection;
 
 db.on('error', function(err) { throw err; });
 
-mongoose.connect(require('./config/db.js').url);
+mongoose.connect('mongodb://localhost:27017/chatter');
 
 app.use(cookieParser());
 app.use(bodyParser.json());

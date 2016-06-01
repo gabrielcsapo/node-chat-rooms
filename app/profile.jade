@@ -2,10 +2,32 @@ html
     head
         title Profile
         style
-            include ./styles/app.css
+            include  ../node_modules/psychic-ui/psychic.css
     body
-        include ./partials/header
-        a(href="room/create") Create A Room
-        ul
-        each chat in chats
-            li= chat.name
+        div(class="navbar navbar-center")
+            div(class="container")
+                div(class="navbar-title")
+                    span 
+                        a(href="/" class="text-black") Chatter
+                div(class="navbar-content")
+                    div(class="nav")
+                        if(!user)
+                            a(class="text-black" href="/login") Login
+                        else 
+                            a(class="text-black" href="/room/create") Create a Room
+                            a(class="text-black active" href="/profile") Profile
+
+        div.grid(style="margin-top:60px;")
+            div.col-2-12
+            div.col-8-12
+                ul.list
+                    for room in rooms
+                        li.list-item
+                            a(href="/" + room.name)=room.name
+                            div.badge.badge-default=room.messages.length
+            div.col-2-12
+
+        div(class="navbar navbar-center" style="bottom:0;position:absolute;")
+            div(class="container text-center")
+                div(class="text-black") Made with 🖕by&nbsp;
+                    a(href="www.gabrielcsapo.com") @gabrielcsapo

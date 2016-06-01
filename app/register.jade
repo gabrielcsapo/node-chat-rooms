@@ -1,10 +1,14 @@
 html
     head
-        title Login
+        title Signup
         style
             include  ../node_modules/psychic-ui/psychic.css
         style
             include ./styles/login.css
+        style.
+            button.flat.login {
+                background-color: #b6b6b6;
+            }
     body
         div(class="navbar navbar-center")
             div(class="container")
@@ -13,29 +17,30 @@ html
                         a(href="/") Chatter
 
         div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
-            h3(class="text-black") Login
-            form(id="login" action="/login" method="POST")
+            h3(class="text-black") Signup
+            form(id="register" action="/register" method="POST")
+                input(id="username" name="username" placeholder="username" autocomplete="off")
                 input(id="email" name="email" placeholder="email" autocomplete="off")
                 input(id="password" type="password" name="password" placeholder="password" autocomplete="off")
                 br
-                button(id="btnSignup" class="flat signup" style="float:left;") Sign Up
-                button(id="btnLogin" class="flat" style="float:right;") Login
+                button(id="btnLogin" class="flat login" style="float:left;") Login
+                button(id="btnSignup" class="flat" style="float:right;") Sign Up
 
         div(class="navbar navbar-center" style="bottom:0;position:absolute;")
             div(class="container text-center")
                 div(class="text-black") Made with 🖕by&nbsp;
                     a(href="www.gabrielcsapo.com") @gabrielcsapo
         script.
-            document.getElementById('login').onkeydown = function(e) {
+            document.getElementById('register').onkeydown = function(e) {
                 e.preventDefault;
                 if (e.keyCode == 13) {
-                    document.getElementById("login").submit();
+                    document.getElementById("register").submit();
                     return false;
                 } else {
                     return true;
                 }
             }
-            document.getElementById('btnSignup').onclick = function(e) {
+            document.getElementById('btnLogin').onclick = function(e) {
                 e.preventDefault();
-                location.href = "/signup";
+                location.href = "/login";
             }

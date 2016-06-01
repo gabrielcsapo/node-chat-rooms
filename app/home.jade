@@ -1,0 +1,31 @@
+html
+    head
+        title Chatter
+        style.
+            html, body {
+                background-color: #cfcfc4;
+            }
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+    body
+        div(class="navbar navbar-center")
+            div(class="container")
+                div(class="navbar-title")
+                    span 
+                        a(href="/" class="text-white") Chatter
+                div(class="navbar-content")
+                    div(class="nav")
+                        if(!user)
+                            a(class="text-white" href="/login") Login
+                        else 
+                            a(class="text-white" href="/room/create") Create a Room
+                            a(class="text-white" href="/profile") Profile
+
+        div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
+            h3(class="text-white") Chatter
+            div(class="text-white") open chat rooms for the masses 🐒
+
+        div(class="navbar navbar-center" style="bottom:0;position:absolute;")
+            div(class="container text-center")
+                div(class="text-white") Made with 🖕by&nbsp;
+                    a(href="www.gabrielcsapo.com") @gabrielcsapo

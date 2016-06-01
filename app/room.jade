@@ -1,65 +1,81 @@
 html
     head
-        style
-            include ./styles/app.css
-        style
-            include ./styles/room.css
-        script(src="/socket.io/socket.io.js")
         title= title
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+        script(src="/socket.io/socket.io.js")
     body
-        if(user)
-            include ./partials/header
-            ul(id="messages")
-                for message in messages
-                    li
-                        div
-                            img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
-                            h3(style='display:inline-block;') #{message.username}
-                            small(style='margin-left: 5px;display:inline-block;') #{message.date}
-                            p #{message.message}
+        div(class="navbar navbar-center")
+            div(class="container")
+                div(class="navbar-title")
+                    span 
+                        a(href="/" class="text-black") Chatter
+                div(class="navbar-content")
+                    div(class="nav")
+                        if(!user)
+                            a(class="text-black" href="/login") Login
+                        else 
+                            a(class="text-black" href="/room/create") Create a Room
+                            a(class="text-black" href="/profile") Profile
 
-            form(class="form" id="chat" action="")
-                input(id="message" autocomplete="off")
-            script.
-                var room = "#{room}";
-                var socket = io();
-                socket.on('connect', function () {
-                    socket.emit(room + ':connection', {username: '#{user.username}'});
-                });
-                document.querySelector("#chat").addEventListener("submit", function(e){
-                    e.preventDefault();
-                    var chatInput = document.getElementById("message");
-                    socket.emit(room + ':message', {message: chatInput.value, username: '#{user.username}'});
-                    chatInput.value = '';
-                    return false;
-                });
-        else
-            ul(id="messages")
-                for message in messages
-                    li
-                        div
-                            img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;float:left;margin-right: 5px;")
-                            h3(style='display:inline-block;') #{message.username}
-                            small(style='margin-left: 5px;display:inline-block;') #{message.date}
-                            p #{message.message}
+        div(style="margin-top:60px;")
+            if(user)
+                div.grid
+                div.col-2-12
+                div.col-8-12
+                    ul.list(id="messages")
+                        for message in messages
+                            li.list-item(style="border:0px;")
+                                div.list-item-left
+                                    h3(style='display:inline-block;margin:0px;') #{message.username}
+                                    br
+                                    img(src="/user/#{message.username}/avatar" style="width:35px;height:35px;")
+                                    br
+                                    small(style='margin-left: 5px;display:inline-block;') #{message.date}
+                                div.list-item-right        
+                                    p #{message.message}
 
-            div(class="links")
-                a(class="signup" href="/signup?redirect_uri=#{room}") Sign up
-                a(class="login" href="/login?redirect_uri=#{room}") Login
-        script.
-            var room = "#{room}";
-            var socket = io();
-            socket.on(room + ':message', function(data){
-                var message = document.createElement('LI');
-                message.innerHTML += "<div>" +
-                    "<img src='/user/" + data.username + "/avatar' style='width:35px;height:35px;float:left;margin-right: 5px;'> " +
-                    "<h3 style='display:inline-block;'>" + data.username + "</h3>" + "<small style='margin-left: 5px;display:inline-block;'>" + data.date + "</small>" +
-                    "<p>" + data.message + "</p>" +
-                    "</div>";
-                document.getElementById('messages').appendChild(message);
-            });
-            socket.on(room + ':connection', function(data){
-                var message = document.createElement('LI');
-                    message.innerHTML = data.username + ' has connected';
-                document.getElementById('messages').appendChild(message);
-            });
+                    form(class="form" id="chat" action="")
+                        input(id="message" autocomplete="off" style="width:100%;height:50px;padding:10px;")
+                    
+                    script.
+                        var room = "#{room}";
+                        var socket = io();
+                        socket.on(room + ':message', function(data){
+                            var message = document.createElement('LI');
+                            message.className += 'list-item';
+                            message.style.border = '0px';
+                            message.innerHTML = ''+
+                            '<div class="list-item-left">' +
+                                '<h3 style="display:inline-block;margin:0px;">'+data.username+'</h3>' +
+                                '<br><img src="/user/'+data.username+'/avatar" style="width:35px;height:35px;">' +
+                                '<br><small style="margin-left: 5px;display:inline-block;">'+ data.date +'</small>' +
+                            '</div>' +
+                            '<div class="list-item-right">' +
+                                '<p>'+ data.message +'</p>' +
+                            '</div>';
+                            document.getElementById('messages').appendChild(message);
+                        });
+                        socket.on('connect', function () {
+                            socket.emit(room + ':connection', {username: '#{user.username}'});
+                        });
+                        document.querySelector("#chat").addEventListener("submit", function(e){
+                            e.preventDefault();
+                            var chatInput = document.getElementById("message");
+                            socket.emit(room + ':message', {message: chatInput.value, username: '#{user.username}'});
+                            chatInput.value = '';
+                            return false;
+                        });
+                        socket.on(room + ':connection', function(data){
+                            var message = document.createElement('LI');
+                            message.className += 'badge badge-info';
+                            message.style.marginBottom = '10px';
+                            message.style.display = 'block';
+                                message.innerHTML = data.username + ' has connected';
+                            document.getElementById('messages').appendChild(message);
+                        });
+                div.col-2-12
+            else 
+                div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
+                    h3(class="text-black") Authentication Needed
+                    div(class="text-black") Please login to view this page 🐒
