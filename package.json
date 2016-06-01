@@ -4,8 +4,8 @@
   "description": "open chat rooms for the masses 🐒",
   "main": "index.js",
   "scripts": {
-    "preinstall": "sh ./scripts/provision.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "test": "./node_modules/.bin/mocha;"
   },
   "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
   "license": "ISC",

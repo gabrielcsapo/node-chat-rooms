@@ -7,7 +7,7 @@
 [![npm](https://img.shields.io/npm/dt/node-chat-rooms.svg)]()
 [![npm](https://img.shields.io/npm/dm/node-chat-rooms.svg)]()
 
-> simple one room chats specific one topic of though
+> open chat rooms for the masses :monkey:
 
 # routes
 

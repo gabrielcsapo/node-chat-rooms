@@ -31,5 +31,7 @@ var io = require('socket.io')(server);
 require('./api')(app, io, passport);
 
 server.listen(process.env.PORT || 3000, function() {
-    console.log('chatter listening on localhost:', server.address().port);
+    console.log('chatter listening on http://localhost:%s', process.env.PORT || 3000);
 });
+
+module.exports = app;

@@ -26,11 +26,11 @@ describe('chatter', function() {
         password: 'testing123'
     };
 
-    describe('register', function() {
+    describe('signup', function() {
 
-        it('should get back a 302 response for register', function(done) {
+        it('should get back a 302 response for signup', function(done) {
             request(app)
-                .post('/register')
+                .post('/signup')
                 .send(object)
                 .expect(302)
                 .end(function(err, res) {
