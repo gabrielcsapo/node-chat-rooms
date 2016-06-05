@@ -22,7 +22,7 @@ describe('chatter', function() {
 
     var object = {
         username: now,
-        email: 'test'+now+'@test.com',
+        email: 'test' + now + '@test.com',
         password: 'testing123'
     };
 
@@ -30,7 +30,7 @@ describe('chatter', function() {
 
         it('should get back a 302 response for signup', function(done) {
             request(app)
-                .post('/signup')
+                .post('/register')
                 .send(object)
                 .expect(302)
                 .end(function(err, res) {
@@ -45,10 +45,9 @@ describe('chatter', function() {
         it('should get a 302 response for login', function(done) {
             request(app)
                 .post('/login')
-                .send(object)
+                .auth(object.email, object.password)
                 .expect(302)
                 .end(function(err, res) {
-                    object.cookies = res.headers['set-cookie'];
                     done();
                 });
         });
@@ -56,7 +55,7 @@ describe('chatter', function() {
         it('should be able to get to the profile page', function(done) {
             request(app)
                 .get('/profile')
-                .set('cookie', object.cookies)
+                .auth(object.email, object.password)
                 .expect(200)
                 .end(function(err, res) {
                     if (err) throw err;

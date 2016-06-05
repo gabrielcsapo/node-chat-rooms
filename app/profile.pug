@@ -1,0 +1,19 @@
+html
+    head
+        title Profile
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+    body
+        include templates/header.pug
+
+        div.grid(style="margin-top:60px;")
+            div.col-2-12
+            div.col-8-12
+                ul.list
+                    for room in rooms
+                        li.list-item
+                            a(href="/" + room.name)=room.name
+                            div.badge.badge-default=room.messages.length
+            div.col-2-12
+
+        include templates/footer.pug

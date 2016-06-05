@@ -2,13 +2,27 @@ var openBadge = require('openbadge');
 var _ = require('underscore');
 var ChatModel = require('../../models/chat');
 var UserModel = require('../../models/user');
+var basicAuth = require('basic-auth-connect');
 
 var isAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    req.session.redirect_uri = req.originalUrl;
-    res.redirect('/login');
+    return basicAuth(function(user, pass, done) {
+        UserModel.findOne({
+            'local.email': user
+        }, function(err, user) {
+            if (err) {
+                return done(err, null);
+            }
+            if (!user || user == null) {
+                return done('No user found.', null);
+            }
+            if (!user.isPassword(pass)) {
+                return done('Oops! Wrong password.', null);
+            } else {
+                req.session.user = user;
+                return done(null, user);
+            }
+        });
+    })(req, res, next);
 };
 
 var redirectNext = function(req, res, next) {
@@ -20,29 +34,54 @@ var redirectNext = function(req, res, next) {
     next();
 };
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
     app.get('/', function(req, res) {
-        res.render('home', {
-            user: req.user
-        });
+        res.render('home', req.session);
     });
     app.get('/redirect', function(req, res) {
         res.redirect(req.session.redirect_uri);
     });
-    app.get('/login', redirectNext, function(req, res) {
-        res.render('login', {});
+    app.get('/login', isAuthenticated, function(req, res) {
+        res.redirect('/profile');
     });
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/redirect',
-        failureRedirect: '/login'
-    }));
-    app.get('/register', redirectNext, function(req, res) {
-        res.render('register', {});
+    app.get('/logout', function(req, res) {
+        req.session.destroy(function() {
+            res.redirect('/');
+        });
     });
-    app.post('/register', passport.authenticate('local-signup', {
-        successRedirect: '/redirect',
-        failureRedirect: '/register'
-    }));
+    app.get('/register', function(req, res) {
+        var error = req.query.error;
+        res.render('register', {error: error});
+    });
+    app.post('/register', function(req, res, next) {
+        var email = req.body.email;
+        var password = req.body.password;
+
+        UserModel.findOne({
+            'local.email': email
+        }, function(err, _user) {
+            if (err) {
+                return res.redirect('/register?error=' + err.toString());
+            }
+            if (_user) {
+                return res.redirect('/register?error=That email is already taken');
+            } else {
+                var user = new UserModel();
+                user.username = req.body.username;
+                user.local.email = email;
+                user.local.password = user.generateHash(password);
+                user.settings = {};
+                user.settings.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                user.save(function(err) {
+                    if (err) {
+                        throw err;
+                    }
+                    req.session.user = user;
+                    return next(null, user);
+                });
+            }
+        });
+    }, redirectNext);
     app.get('/profile', isAuthenticated, function(req, res) {
         ChatModel.find({
             owners: req.user.id
@@ -55,18 +94,15 @@ module.exports = function(app, passport) {
     });
     app.get('/user/:username/avatar', function(req, res) {
         var username = req.params.username;
-        UserModel.find({username: username}, function(err, user) {
+        UserModel.find({
+            username: username
+        }, function(err, user) {
             res.set('Content-Type', 'image/svg+xml');
-            res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color +'" x="0" y="0" width="100" height="100"/></svg>');
-        });
-    });
-    app.get('/rooms', function(req, res) {
-        ChatModel.find({}, function(err, rooms) {
-            res.render('rooms', {rooms: _.pluck(rooms, 'name')});
+            res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color + '" x="0" y="0" width="100" height="100"/></svg>');
         });
     });
     app.get('/room/create', isAuthenticated, function(req, res) {
-        res.render('roomCreate', {});
+        res.render('roomCreate', req.session);
     });
     app.post('/room/create', isAuthenticated, function(req, res) {
         if (req.body.room) {
@@ -105,7 +141,7 @@ module.exports = function(app, passport) {
             res.send(badgeSvg);
         });
     });
-    app.get('/:room', function(req, res) {
+    app.get('/:room', isAuthenticated, function(req, res) {
         var room = req.params.room;
         ChatModel.findOne({
             name: room

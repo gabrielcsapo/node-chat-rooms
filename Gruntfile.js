@@ -15,18 +15,6 @@ module.exports = function(grunt) {
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
                 }
             },
-            login: {
-                options: {
-                    path: './screenshot/login',
-                    files: [{
-                        type: 'remote',
-                        src: 'http://localhost:3000/login',
-                        dest: 'login.png',
-                        delay: 100,
-                    }],
-                    viewport: ['1920x1080', '1024x768', '640x960', '320x480']
-                }
-            },
             register: {
                 options: {
                     path: './screenshot/register',
@@ -62,8 +50,39 @@ module.exports = function(grunt) {
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
                 }
+            },
+            room: {
+                options: {
+                    path: './screenshot/room',
+                    files: [{
+                        type: 'remote',
+                        src: 'http://localhost:3000/testing',
+                        dest: 'room.png',
+                        delay: 500,
+                        basicAuth: {
+                            username: 'root@gmail.com',
+                            password: 'test123'
+                        }
+                    }],
+                    viewport: ['1920x1080', '1024x768', '640x960', '320x480']
+                }
+            },
+            profile: {
+                options: {
+                    path: './screenshot/profile',
+                    files: [{
+                        type: 'remote',
+                        src: 'http://localhost:3000/profile',
+                        dest: 'profile.png',
+                        delay: 500,
+                        basicAuth: {
+                            username: 'root@gmail.com',
+                            password: 'test123'
+                        }
+                    }],
+                    viewport: ['1920x1080', '1024x768', '640x960', '320x480']
+                }
             }
-            // TODO: add screenshots for chat rooms and profile page
         }
     });
 }

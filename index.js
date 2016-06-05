@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 var mongoose = require('mongoose');
+var port = process.env.PORT || 3000;
 var logger = require('bunyan').createLogger({name: 'chatter'});
 var db = mongoose.connection;
 
@@ -19,19 +20,16 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-require('./models/passport')(passport);
 app.set('views', './app');
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.logger = logger;
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-require('./api')(app, io, passport);
+require('./api')(app, io);
 
-server.listen(process.env.PORT || 3000, function() {
-    console.log('chatter listening on http://localhost:%s', process.env.PORT || 3000);
+server.listen(port, function() {
+    console.log('chatter listening on http://localhost:%s', port);
 });
 
 module.exports = app;

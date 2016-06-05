@@ -1,0 +1,13 @@
+html
+    head
+        title 404
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+    body
+        include templates/header.pug
+
+        div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
+            h3(class="text-black") Page Not Found
+            div(class="text-black") Sorry this page does not exist 🐒
+
+        include templates/footer.pug

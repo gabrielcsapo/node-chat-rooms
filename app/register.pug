@@ -1,0 +1,64 @@
+html
+    head
+        title Register
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+        style.
+            form {
+                width: 50%;
+                margin: 0 auto;
+            }
+            input {
+                display: block;
+                margin: 0;
+                width: 100%;
+                font-family: sans-serif;
+                font-size: 18px;
+                appearance: none;
+                box-shadow: none;
+                border-radius: none;
+            }
+            input[type="text"]:focus {
+                outline: none;
+            }
+            input {
+                padding: 10px;
+                border: none;
+                border-bottom: solid 2px #c9c9c9;
+                transition: border 0.3s;
+            }
+            input:focus, input.focus {
+                outline: none;
+                border-bottom: solid 2px #969696;
+            }
+    body
+        include templates/header.pug
+
+        div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
+            h3(class="text-black") Register
+            form(id="register" action="/register" method="POST")
+                if(error)
+                    div.alert.alert-danger=error
+                input(id="username" name="username" placeholder="username" autocomplete="off")
+                input(id="email" name="email" placeholder="email" autocomplete="off")
+                input(id="password" type="password" name="password" placeholder="password" autocomplete="off")
+                br
+                button(id="btnLogin" class="btn btn-primary login" style="float:left;") Login
+                button(id="btnSignup" class="btn btn-success" style="float:right;") Register
+
+        include templates/footer.pug
+
+        script.
+            document.getElementById('register').onkeydown = function(e) {
+                e.preventDefault;
+                if (e.keyCode == 13) {
+                    document.getElementById("register").submit();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            document.getElementById('btnLogin').onclick = function(e) {
+                e.preventDefault();
+                location.href = "/login";
+            }

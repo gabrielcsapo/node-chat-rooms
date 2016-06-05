@@ -1,0 +1,55 @@
+html
+    head
+        title Login
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+        style.
+            form {
+                width: 50%;
+                margin: 0 auto;
+            }
+            input {
+                display: block;
+                margin: 0;
+                width: 100%;
+                font-family: sans-serif;
+                font-size: 18px;
+                appearance: none;
+                box-shadow: none;
+                border-radius: none;
+            }
+            input[type="text"]:focus {
+                outline: none;
+            }
+            input {
+                padding: 10px;
+                border: none;
+                border-bottom: solid 2px #c9c9c9;
+                transition: border 0.3s;
+            }
+            input:focus, input.focus {
+                outline: none;
+                border-bottom: solid 2px #969696;
+            }
+    body
+        include templates/header.pug
+
+        div(class="text-center", style="width:100%;position: absolute;top: 50%;transform: translateY(-50%);")
+            h3(class="text-black") Create a room
+            form(id="createRoom" action="/room/create" method="POST")
+                input(id="room" name="room" placeholder="room" autocomplete="off")
+                br
+                button(id="btnCreate" class="btn btn-primary" style="float:right;") Create
+
+            script.
+                document.getElementById('createRoom').onkeydown = function(e) {
+                    e.preventDefault;
+                    if (e.keyCode == 13) {
+                        document.getElementById("createRoom").submit();
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+        include templates/footer.pug
