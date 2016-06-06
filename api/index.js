@@ -1,9 +1,9 @@
 var ChatModel = require('../models/chat');
 var moment = require('moment');
 
-module.exports = function(app, io, passport) {
+module.exports = function(app, io) {
     var router = require('socket.io-events')();
-    require('./routes')(app, passport);
+    require('./routes')(app);
 
     io.on('connection', function(socket) {
         socket.on('error', function(error) {
