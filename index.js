@@ -19,7 +19,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-app.set('views', './app');
+app.set('views', './views');
 app.set('view engine', 'pug');
 app.logger = logger;
 

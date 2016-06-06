@@ -107,21 +107,23 @@ module.exports = function(app) {
         res.render('roomCreate', req.session);
     });
     app.post('/room/create', isAuthenticated, function(req, res) {
-        if (req.body.room) {
-            var chat = new ChatModel();
-            chat.owners = [req.user.id];
-            chat.name = req.body.room;
-            chat.save(function(err) {
+        var name = req.body.room;
+        var user_id = req.user.id;
+        if (name && user_id) {
+            ChatModel.createRoom(name, user_id, function(err) {
                 if (err) {
-                    res.send({
+                    res.render('roomCreate', {
+                        user: req.session.user,
                         error: err.toString()
                     });
+                } else {
+                    res.redirect('/profile');
                 }
-                res.redirect('/profile');
             });
         } else {
-            res.send({
-                error: 'please specifiy a room'
+            res.render('roomCreate', {
+                user: req.session.user,
+                error: err.toString()
             });
         }
     });

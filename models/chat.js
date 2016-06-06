@@ -6,4 +6,32 @@ var Chat = mongoose.Schema({
     messages: Array
 });
 
-module.exports = mongoose.model('Chat', Chat);
+var Model = mongoose.model('Chat', Chat);
+
+/**
+ * name = name of room
+ * user_id = is the user_id of the creator
+ * callback = is a function(err)
+ */
+Model.createRoom = function(name, user_id, callback) {
+    Model.findOne({
+        name: name
+    }, function(err, chat) {
+        if(chat) {
+            callback('chat already exists');
+        } else {
+            var chat = new Model();
+            chat.owners = [user_id];
+            chat.name = name;
+            chat.save(function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback();
+                }
+            });
+        }
+    });
+}
+
+module.exports = Model;

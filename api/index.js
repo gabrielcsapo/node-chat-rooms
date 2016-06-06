@@ -16,7 +16,6 @@ module.exports = function(app, io) {
     });
     router.on('*:message', function(socket, args, next) {
         var room = args[0].substring(0, args[0].indexOf(':'));
-        console.log(args);
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
