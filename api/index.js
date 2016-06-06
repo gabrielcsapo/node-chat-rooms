@@ -16,12 +16,13 @@ module.exports = function(app, io, passport) {
     });
     router.on('*:message', function(socket, args, next) {
         var room = args[0].substring(0, args[0].indexOf(':'));
+        console.log(args);
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
             chat.messages.push(args[1]);
             chat.save();
-            args[1].date = moment().format('LT');
+            args[1].date = moment().format("YYYY-MM-DD HH:mm")
             io.emit(args[0], args[1]);
             next();
         });

@@ -22,6 +22,7 @@
     "openbadge": "^1.0.3",
     "psychic-ui": "^0.1.1",
     "pug": "^2.0.0-beta2",
+    "rss": "^1.2.1",
     "socket.io": "^1.4.6",
     "socket.io-events": "^0.4.6",
     "underscore": "^1.8.3"
