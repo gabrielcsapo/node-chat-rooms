@@ -1,5 +1,7 @@
 var openBadge = require('openbadge');
 var _ = require('underscore');
+var RSS = require('rss');
+var moment = require('moment');
 var ChatModel = require('../../models/chat');
 var UserModel = require('../../models/user');
 var basicAuth = require('basic-auth-connect');
@@ -153,6 +155,32 @@ module.exports = function(app) {
                     room: room,
                     user: req.user
                 });
+            } else {
+                res.render('404', {});
+            }
+        });
+    });
+    app.get('/:room/rss', isAuthenticated, function(req, res) {
+        var room = req.params.room;
+        ChatModel.findOne({
+            name: room
+        }, function(err, chat) {
+            if (chat) {;
+                var feed = new RSS({
+                    title: room,
+                    description: 'description',
+                    feed_url: 'http://'+req.headers.host + req.originalUrl + '/rss',
+                    site_url: 'http://'+req.headers.host
+                });
+                chat.messages.forEach(function(message) {
+                    feed.item({
+                        title:  message.message,
+                        author: message.username,
+                        date: moment(message.date).format()
+                    });
+                });
+                var xml = feed.xml({indent: true});
+                res.send(xml);
             } else {
                 res.render('404', {});
             }

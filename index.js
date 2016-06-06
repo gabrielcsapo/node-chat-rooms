@@ -2,7 +2,6 @@ var app = require('express')();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var passport = require('passport');
 var mongoose = require('mongoose');
 var port = process.env.PORT || 3000;
 var logger = require('bunyan').createLogger({name: 'chatter'});
