@@ -138,7 +138,7 @@ module.exports = function(app) {
                 shadow: '#fff'
             },
             font: {
-                fontFace: '../../app/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
             }
         }, function(err, badgeSvg) {
             res.set('Content-Type', 'image/svg+xml');
