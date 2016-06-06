@@ -129,20 +129,78 @@ module.exports = function(app) {
     });
     app.get('/:room.svg', function(req, res) {
         var room = req.params.room;
-        openBadge({
-            text: ['chatter', room],
-            color: {
-                left: '#626262',
-                right: '#0188b3',
-                font: '#fff',
-                shadow: '#fff'
-            },
-            font: {
-                fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+        ChatModel.find({
+            name: room
+        }, function(err, chat) {
+            if(!chat) {
+                openBadge({
+                    text: ['chatter', 'room does not exist'],
+                    color: {
+                        left: '#626262',
+                        right: '#b64a4a',
+                        font: '#fff'
+                    },
+                    font: {
+                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                    }
+                }, function(err, badgeSvg) {
+                    res.set('Content-Type', 'image/svg+xml');
+                    res.send(badgeSvg);
+                });
+            } else {
+                openBadge({
+                    text: ['chatter', room],
+                    color: {
+                        left: '#626262',
+                        right: '#0188b3',
+                        font: '#fff'
+                    },
+                    font: {
+                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                    }
+                }, function(err, badgeSvg) {
+                    res.set('Content-Type', 'image/svg+xml');
+                    res.send(badgeSvg);
+                });
             }
-        }, function(err, badgeSvg) {
-            res.set('Content-Type', 'image/svg+xml');
-            res.send(badgeSvg);
+        });
+    });
+    app.get('/:room/count.svg', function(req, res) {
+        var room = req.params.room;
+        ChatModel.findOne({
+            name: room
+        }, function(err, chat) {
+            if(!chat) {
+                openBadge({
+                    text: ['chatter', 'room does not exist'],
+                    color: {
+                        left: '#626262',
+                        right: '#b64a4a',
+                        font: '#fff'
+                    },
+                    font: {
+                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                    }
+                }, function(err, badgeSvg) {
+                    res.set('Content-Type', 'image/svg+xml');
+                    res.send(badgeSvg);
+                });
+            } else {
+                openBadge({
+                    text: [room, 'message count: ' + chat.messages.length],
+                    color: {
+                        left: '#626262',
+                        right: '#0188b3',
+                        font: '#fff'
+                    },
+                    font: {
+                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                    }
+                }, function(err, badgeSvg) {
+                    res.set('Content-Type', 'image/svg+xml');
+                    res.send(badgeSvg);
+                });
+            }
         });
     });
     app.get('/:room', isAuthenticated, function(req, res) {
