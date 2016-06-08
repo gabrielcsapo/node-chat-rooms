@@ -13,6 +13,8 @@
 
 - `/{room}.svg`
     - (renders a badge that shows room name)
+- `/{room}/count.svg`
+    - (renders a badge with the amount of message in a chat room)
 - `/{room}`
     - (renders the chat room window)
 
@@ -26,10 +28,3 @@
 > mac users use `sh ./scripts/provision_osx.sh`
 
 - mongodb
-
-
-# todo
-
-- needs a UI design
-- needs testing
-- needs a cool front-page
