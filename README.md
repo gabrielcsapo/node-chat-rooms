@@ -11,12 +11,35 @@
 
 # routes
 
-- `/{room}.svg`
+- `GET /{room}.svg`
     - (renders a badge that shows room name)
-- `/{room}/count.svg`
+- `GET /{room}/count.svg`
     - (renders a badge with the amount of message in a chat room)
-- `/{room}`
+- `GET /{room}`
     - (renders the chat room window)
+- `GET /{room}/json`
+    - ```
+        {
+            "title": "testing",
+            "messages": [{
+                "message": "does this work?",
+                "username": "root",
+                "date": "2016-06-07 18:34"
+            }, {
+                "message": "oh great?",
+                "username": "root",
+                "date": "2016-06-07 18:34"
+            }, {
+                "message": "this is awesome",
+                "username": "root",
+                "date": "2016-06-07 18:40"
+            }],
+            "room": "testing"
+        }
+    ```
+- `POST /{room}/messages`
+    - `example`
+    - `curl -u root@gmail.com:test123 http://localhost:3000/testing/messages --data "message=this is a message"`
 
 # install
 

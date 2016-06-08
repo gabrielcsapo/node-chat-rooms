@@ -39,7 +39,7 @@ html
             form(id="createRoom" action="/room/create" method="POST")
                 if(error)
                     div.alert.alert-danger=error
-                input(id="room" name="room" placeholder="room" autocomplete="off")
+                input(id="room" name="name" placeholder="room" autocomplete="off")
                 br
                 button(id="btnCreate" class="btn btn-primary" style="float:right;") Create
 

@@ -26,20 +26,9 @@ var isAuthenticated = function(req, res, next) {
     })(req, res, next);
 };
 
-var redirectNext = function(req, res) {
-    if (req.query.redirect_uri) {
-        res.redirect(req.query.redirect_uri);
-    } else {
-        res.redirect(req.session.redirect_uri || '/');
-    }
-};
-
-module.exports = function(app) {
+module.exports = function(app, io) {
     app.get('/', function(req, res) {
         res.render('home', req.session);
-    });
-    app.get('/redirect', function(req, res) {
-        res.redirect(req.session.redirect_uri);
     });
     app.get('/login', isAuthenticated, function(req, res) {
         res.redirect('/profile');
@@ -53,7 +42,7 @@ module.exports = function(app) {
         var error = req.query.error;
         res.render('register', {error: error});
     });
-    app.post('/register', function(req, res, next) {
+    app.post('/register', function(req, res) {
         var email = req.body.email;
         var password = req.body.password;
 
@@ -77,11 +66,11 @@ module.exports = function(app) {
                         throw err;
                     }
                     req.session.user = user;
-                    return next(null, user);
+                    return res.redirect('/profile');
                 });
             }
         });
-    }, redirectNext);
+    });
     app.get('/profile', isAuthenticated, function(req, res) {
         ChatModel.find({
             owners: req.user.id
@@ -101,11 +90,43 @@ module.exports = function(app) {
             res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color + '" x="0" y="0" width="100" height="100"/></svg>');
         });
     });
+    app.post('/:name/messages', isAuthenticated, function(req, res) {
+        var room = req.params.name;
+        var message = req.body.message;
+        if(room && message) {
+            ChatModel.findOne({
+                name: room
+            }, function(err, chat) {
+                if(err) { res.sendStatus(500); }
+                var data = {
+                    username: req.session.user.username,
+                    message: message,
+                    date: moment().format('YYYY-MM-DD HH:mm')
+                };
+                chat.messages.push(data);
+                chat.save(function(err) {
+                    if(err) {
+                        res.send({
+                            error: err
+                        });
+                    } else {
+                        io.emit(room + ':message', data);
+                        res.send({
+                            title: chat.name,
+                            messages: chat.messages
+                        });
+                    }
+                });
+            });
+        } else {
+            res.sendStatus(500);
+        }
+    });
     app.get('/room/create', isAuthenticated, function(req, res) {
         res.render('roomCreate', req.session);
     });
     app.post('/room/create', isAuthenticated, function(req, res) {
-        var name = req.body.room;
+        var name = req.body.name;
         var user_id = req.user.id;
         if (name && user_id) {
             ChatModel.createRoom(name, user_id, function(err) {
@@ -215,6 +236,21 @@ module.exports = function(app) {
                 });
             } else {
                 res.render('404', {});
+            }
+        });
+    });
+    app.get('/:room/json', isAuthenticated, function(req, res) {
+        var room = req.params.room;
+        ChatModel.findOne({
+            name: room
+        }, function(err, chat) {
+            if (chat) {
+                res.send({
+                    title: room,
+                    messages: chat.messages || []
+                });
+            } else {
+                res.sendStatus('404');
             }
         });
     });

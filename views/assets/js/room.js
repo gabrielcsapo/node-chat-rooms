@@ -21,7 +21,7 @@ var createRoom = function(username, room) { // eslint-disable-line no-unused-var
     });
     socket.on(room + ':connection', function(data) {
         var message = document.createElement('LI');
-        message.innerHTML= '<div style="display:inline-block;margin-bottom:10px;" class="badge border-info">' +
+        message.innerHTML= '<div style="display:block;margin-bottom:10px;" class="badge border-info">' +
             data.username + ' has connected' +
         '</div>';
         document.getElementById('messages').appendChild(message);
