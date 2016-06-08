@@ -25,6 +25,8 @@
 
 ## Dependencies
 
-> mac users use `sh ./scripts/provision_osx.sh`
-
 - mongodb
+
+### OSX
+
+> `brew install mongo;`
