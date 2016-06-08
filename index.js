@@ -25,10 +25,10 @@ app.logger = logger;
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-require('./api')(app, io);
+require('./api')(app, io, logger);
 
 server.listen(port, function() {
-    console.log('chatter listening on http://localhost:%s', port);
+    logger.info('chatter listening on http://localhost:%s', port);
 });
 
 module.exports = app;

@@ -1,13 +1,13 @@
 var ChatModel = require('../models/chat');
 var moment = require('moment');
 
-module.exports = function(app, io) {
+module.exports = function(app, io, logger) {
     var router = require('socket.io-events')();
     require('./routes')(app);
 
     io.on('connection', function(socket) {
         socket.on('error', function(error) {
-            console.log(error);
+            logger.error(error);
         });
     });
     router.on('*:connection', function(socket, args, next) {
@@ -21,7 +21,7 @@ module.exports = function(app, io) {
         }, function(err, chat) {
             chat.messages.push(args[1]);
             chat.save();
-            args[1].date = moment().format("YYYY-MM-DD HH:mm")
+            args[1].date = moment().format('YYYY-MM-DD HH:mm');
             io.emit(args[0], args[1]);
             next();
         });

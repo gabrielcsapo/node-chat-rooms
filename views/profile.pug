@@ -9,11 +9,16 @@ html
         div.grid(style="margin-top:60px;")
             div.col-2-12
             div.col-8-12
-                ul.list
-                    for room in rooms
-                        li.list-item
-                            a(href="/" + room.name)=room.name
-                            div.badge.badge-default=room.messages.length
+                if(rooms.length == 0)
+                    div.text-center
+                        h3 no rooms 🐒
+                        a(href="/room/create") create a room!
+                else
+                    ul.list
+                        for room in rooms
+                            li.list-item
+                                a(href="/" + room.name)=room.name
+                                div.badge.badge-default=room.messages.length
             div.col-2-12
 
         include templates/footer.pug

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "./node_modules/.bin/mocha;"
+    "clean": "mongo chatter --eval 'db.dropDatabase()'",
+    "test": "./node_modules/.bin/eslint .;./node_modules/.bin/mocha;"
   },
   "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
   "license": "ISC",

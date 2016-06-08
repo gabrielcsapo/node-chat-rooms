@@ -1,5 +1,4 @@
 var openBadge = require('openbadge');
-var _ = require('underscore');
 var RSS = require('rss');
 var moment = require('moment');
 var ChatModel = require('../../models/chat');
@@ -27,13 +26,12 @@ var isAuthenticated = function(req, res, next) {
     })(req, res, next);
 };
 
-var redirectNext = function(req, res, next) {
+var redirectNext = function(req, res) {
     if (req.query.redirect_uri) {
-        req.session.redirect_uri = req.query.redirect_uri;
+        res.redirect(req.query.redirect_uri);
     } else {
-        req.session.redirect_uri = req.session.redirect_uri || '/';
+        res.redirect(req.session.redirect_uri || '/');
     }
-    next();
 };
 
 module.exports = function(app) {
@@ -123,7 +121,7 @@ module.exports = function(app) {
         } else {
             res.render('roomCreate', {
                 user: req.session.user,
-                error: err.toString()
+                error: 'please login to create a room'
             });
         }
     });
@@ -141,7 +139,7 @@ module.exports = function(app) {
                         font: '#fff'
                     },
                     font: {
-                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                        fontFace: '../../node_modules/openbadge/fonts/Open_Sans/OpenSans-Regular.ttf'
                     }
                 }, function(err, badgeSvg) {
                     res.set('Content-Type', 'image/svg+xml');
@@ -156,7 +154,7 @@ module.exports = function(app) {
                         font: '#fff'
                     },
                     font: {
-                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                        fontFace: '../../node_modules/openbadge/fonts/Open_Sans/OpenSans-Regular.ttf'
                     }
                 }, function(err, badgeSvg) {
                     res.set('Content-Type', 'image/svg+xml');
@@ -179,7 +177,7 @@ module.exports = function(app) {
                         font: '#fff'
                     },
                     font: {
-                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                        fontFace: '../../node_modules/openbadge/fonts/Open_Sans/OpenSans-Regular.ttf'
                     }
                 }, function(err, badgeSvg) {
                     res.set('Content-Type', 'image/svg+xml');
@@ -194,7 +192,7 @@ module.exports = function(app) {
                         font: '#fff'
                     },
                     font: {
-                        fontFace: '../../views/assets/fonts/Open_Sans/OpenSans-Regular.ttf'
+                        fontFace: '../../node_modules/openbadge/fonts/Open_Sans/OpenSans-Regular.ttf'
                     }
                 }, function(err, badgeSvg) {
                     res.set('Content-Type', 'image/svg+xml');
@@ -225,7 +223,7 @@ module.exports = function(app) {
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
-            if (chat) {;
+            if (chat) {
                 var feed = new RSS({
                     title: room,
                     description: 'description',

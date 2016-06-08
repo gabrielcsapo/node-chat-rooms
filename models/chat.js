@@ -20,7 +20,7 @@ Model.createRoom = function(name, user_id, callback) {
         if(chat) {
             callback('chat already exists');
         } else {
-            var chat = new Model();
+            chat = new Model();
             chat.owners = [user_id];
             chat.name = name;
             chat.save(function(err) {
@@ -32,6 +32,6 @@ Model.createRoom = function(name, user_id, callback) {
             });
         }
     });
-}
+};
 
 module.exports = Model;

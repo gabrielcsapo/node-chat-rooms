@@ -1,4 +1,3 @@
-var assert = require('chai').assert;
 var request = require('supertest');
 
 var now = Date.now();
@@ -12,7 +11,7 @@ describe('chatter', function() {
             request(app)
                 .get('/')
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) throw err;
                     done();
                 });
@@ -28,12 +27,13 @@ describe('chatter', function() {
 
     describe('signup', function() {
 
-        it('should get back a 302 response for signup', function(done) {
+        it('should get back a 302 response for register', function(done) {
             request(app)
                 .post('/register')
                 .send(object)
                 .expect(302)
-                .end(function(err, res) {
+                .end(function(err) {
+                    if (err) throw err;
                     done();
                 });
         });
@@ -44,10 +44,11 @@ describe('chatter', function() {
 
         it('should get a 302 response for login', function(done) {
             request(app)
-                .post('/login')
+                .get('/login')
                 .auth(object.email, object.password)
                 .expect(302)
-                .end(function(err, res) {
+                .end(function(err) {
+                    if (err) throw err;
                     done();
                 });
         });
@@ -57,7 +58,7 @@ describe('chatter', function() {
                 .get('/profile')
                 .auth(object.email, object.password)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) throw err;
                     done();
                 });
