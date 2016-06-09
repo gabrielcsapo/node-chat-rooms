@@ -22,7 +22,7 @@ describe('chatter', function() {
     var now = Date.now();
     var object = {
         username: now,
-        email: 'test' + now + '@test.com',
+        email: chance.email({domain: 'example.com'}),
         password: 'testing123'
     };
 

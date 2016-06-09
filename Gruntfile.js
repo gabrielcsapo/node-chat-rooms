@@ -34,7 +34,11 @@ module.exports = function(grunt) {
                         type: 'remote',
                         src: 'http://localhost:3000/404',
                         dest: '404.png',
-                        delay: 100
+                        delay: 100,
+                        basicAuth: {
+                            username: 'root@gmail.com',
+                            password: 'test123'
+                        }
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
                 }
