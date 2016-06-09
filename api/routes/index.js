@@ -1,6 +1,7 @@
 var openBadge = require('openbadge');
 var RSS = require('rss');
 var moment = require('moment');
+var chance = require('chance')();
 var ChatModel = require('../../models/chat');
 var UserModel = require('../../models/user');
 var basicAuth = require('basic-auth-connect');
@@ -30,10 +31,19 @@ module.exports = function(app, io) {
     app.get('/', function(req, res) {
         res.render('home', req.session);
     });
-    app.get('/login', isAuthenticated, function(req, res) {
+    app.get('/login', function(req, res, next) {
+        if(!req.session.created) {
+            req.session.created = true;
+            res.setHeader('WWW-Authenticate', 'Basic realm="Authorization Needed"');
+            res.sendStatus(401);
+        } else {
+            next();
+        }
+    },  isAuthenticated, function(req, res) {
         res.redirect('/profile');
     });
     app.get('/logout', function(req, res) {
+        delete req.headers['authorization'];
         req.session.destroy(function() {
             res.redirect('/');
         });
@@ -60,7 +70,7 @@ module.exports = function(app, io) {
                 user.local.email = email;
                 user.local.password = user.generateHash(password);
                 user.settings = {};
-                user.settings.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                user.settings.color = chance.color({format: 'hex'});
                 user.save(function(err) {
                     if (err) {
                         throw err;
@@ -129,7 +139,7 @@ module.exports = function(app, io) {
         var name = req.body.name;
         var user_id = req.user.id;
         if (name && user_id) {
-            ChatModel.createRoom(name, user_id, function(err) {
+            ChatModel.createRoom(name, user_id, chance.color({format: 'hex'}), function(err) {
                 if (err) {
                     res.render('roomCreate', {
                         user: req.session.user,
@@ -146,9 +156,50 @@ module.exports = function(app, io) {
             });
         }
     });
+    app.post('/:room/settings', isAuthenticated, function(req, res) {
+        var room = req.params.room;
+        var color = req.body.color;
+        ChatModel.findOne({
+            name: room,
+            owners: req.user.id
+        }, function(err, chat) {
+            if (chat) {
+                chat.color = color;
+                chat.save(function() {
+                    res.redirect('/' + room);
+                });
+            } else {
+                res.render('error', {
+                    user: req.user,
+                    title: 'Not Authorized',
+                    error: 'You are not authorized to view this page'
+                });
+            }
+        });
+    });
+    app.get('/:room/settings', isAuthenticated, function(req, res) {
+        var room = req.params.room;
+        ChatModel.findOne({
+            name: room,
+            owners: req.user.id
+        }, function(err, chat) {
+            if (chat) {
+                res.render('roomSettings', {
+                    user: req.user,
+                    chat: chat
+                });
+            } else {
+                res.render('error', {
+                    user: req.user,
+                    title: 'Not Authorized',
+                    error: 'You are not authorized to view this page'
+                });
+            }
+        });
+    });
     app.get('/:room.svg', function(req, res) {
         var room = req.params.room;
-        ChatModel.find({
+        ChatModel.findOne({
             name: room
         }, function(err, chat) {
             if(!chat) {
@@ -171,7 +222,7 @@ module.exports = function(app, io) {
                     text: ['chatter', room],
                     color: {
                         left: '#626262',
-                        right: '#0188b3',
+                        right: chat.color,
                         font: '#fff'
                     },
                     font: {
@@ -209,7 +260,7 @@ module.exports = function(app, io) {
                     text: [room, 'message count: ' + chat.messages.length],
                     color: {
                         left: '#626262',
-                        right: '#0188b3',
+                        right: chat.color,
                         font: '#fff'
                     },
                     font: {
@@ -232,10 +283,13 @@ module.exports = function(app, io) {
                     title: room,
                     messages: chat.messages,
                     room: room,
-                    user: req.user
+                    user: req.user,
+                    owner: (chat.owners.indexOf(req.user.id) > -1)
                 });
             } else {
-                res.render('404', {});
+                res.render('404', {
+                    user: req.user
+                });
             }
         });
     });
@@ -276,8 +330,15 @@ module.exports = function(app, io) {
                 var xml = feed.xml({indent: true});
                 res.send(xml);
             } else {
-                res.render('404', {});
+                res.render('404', {
+                    user: req.user
+                });
             }
+        });
+    });
+    app.use(function(req, res) {
+        res.render('404', {
+            user: req.user
         });
     });
 };

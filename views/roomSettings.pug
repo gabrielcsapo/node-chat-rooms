@@ -1,0 +1,51 @@
+html
+    head
+        title=chat.name
+        style
+            include  ../node_modules/psychic-ui/psychic.css
+        style.
+            form {
+                width: 50%;
+                margin: 0 auto;
+            }
+            input {
+                display: block;
+                margin: 0;
+                width: 100%;
+                font-family: sans-serif;
+                font-size: 18px;
+                appearance: none;
+                box-shadow: none;
+                border-radius: none;
+            }
+            input[type="text"]:focus {
+                outline: none;
+            }
+            input {
+                padding: 10px;
+                border: none;
+                border-bottom: solid 2px #c9c9c9;
+                transition: border 0.3s;
+            }
+            input:focus, input.focus {
+                outline: none;
+                border-bottom: solid 2px #969696;
+            }
+        link(rel="stylesheet" href="/font-awesome/css/font-awesome.css")
+    body
+        include templates/header.pug
+
+        div(style="margin-top:60px;")
+            h3(class="text-black text-center") Update settings
+            form(action="/" + chat.name + "/settings" method="POST")
+                if(error)
+                    div.alert.alert-danger=error
+                label name
+                input(disabled="disabled" value=chat.name autocomplete="off")
+                br
+                label color
+                input(name="color" placeholder="color" value=chat.color autocomplete="off")
+                br
+                button(id="btnUpdate" class="btn btn-primary" style="float:right;" type="submit") Update
+
+        include templates/footer.pug

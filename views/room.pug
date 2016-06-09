@@ -7,6 +7,7 @@ html
              .list-item-right {
                  max-width: 80%;
              }
+        link(rel="stylesheet" href="/font-awesome/css/font-awesome.css")
         script(src="/socket.io/socket.io.js")
     body
         include templates/header.pug
@@ -20,6 +21,9 @@ html
                         img(src=title + '/count.svg' style="float:right;")
                         br
                         br
+                        if(owner)
+                            a(href="/" + title + "/settings" style="color:black;top:20px;position:absolute;right:20px;")
+                                i(class="fa fa-3x fa-cog" aria-hidden="true")
                         ul.list(id="messages")
                             for message in messages
                                 li.list-item(style="border:0px;")

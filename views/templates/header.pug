@@ -12,7 +12,7 @@ div(class="navbar navbar-center")
                     a(class="text-black" href="/room/create") Create a Room
                     a(class="text-black" href="/profile") Profile
                     a(class="text-black" id="logout" href="/logout") Logout
-
+                    b(class="text-black" style="margin-left:10px;")=user.username
                     script.
                         document.getElementById('logout').onclick = function(event) {
                             var str = location.href.replace("http://", "http://" + new Date().getTime() + "@") + 'logout';

@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -21,7 +22,7 @@ app.use(session({
 }));
 app.set('views', './views');
 app.set('view engine', 'pug');
-app.logger = logger;
+app.use('/font-awesome', express.static('node_modules/font-awesome'));
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
