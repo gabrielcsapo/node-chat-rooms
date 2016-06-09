@@ -43,17 +43,6 @@ describe('chatter', function() {
 
     describe('login', function() {
 
-        it('should get a 302 response for login', function(done) {
-            request(app)
-                .get('/login')
-                .auth(object.email, object.password)
-                .expect(302)
-                .end(function(err) {
-                    if (err) throw err;
-                    done();
-                });
-        });
-
         it('should be able to get to the profile page for ' + object.email, function(done) {
             request(app)
                 .get('/profile')
