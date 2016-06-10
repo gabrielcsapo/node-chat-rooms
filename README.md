@@ -18,7 +18,7 @@
 - `GET /{room}`
     - (renders the chat room window)
 - `GET /{room}/json`
-    - 
+    -
     ```json
         {
             "title": "testing",
@@ -40,7 +40,7 @@
     ```
 - `POST /{room}/messages`
     - `example`
-    - `curl -u root@gmail.com:test123 http://localhost:3000/testing/messages --data "message=this is a message"`
+        - `curl -u root@gmail.com:test123 http://localhost:3000/testing/messages --data "message=this is a message"`
 
 # install
 
