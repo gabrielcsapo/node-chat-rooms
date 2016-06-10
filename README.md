@@ -18,7 +18,8 @@
 - `GET /{room}`
     - (renders the chat room window)
 - `GET /{room}/json`
-    - ```
+    - 
+    ```json
         {
             "title": "testing",
             "messages": [{
