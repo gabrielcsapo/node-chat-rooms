@@ -53,3 +53,9 @@
 ### OSX
 
 > `brew install mongo;`
+
+## tests
+
+> run `npm test`
+
+this will generate a `test.json` which can be used to run `grunt` which will generate screenshots for all pages related to that user

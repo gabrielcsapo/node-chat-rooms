@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 var request = require('supertest');
 var chance = require('chance')();
+var fs = require('fs');
 
 describe('chatter', function() {
     var app = require('../index.js');
@@ -22,7 +23,9 @@ describe('chatter', function() {
     var now = Date.now();
     var object = {
         username: now,
-        email: chance.email({domain: 'example.com'}),
+        email: chance.email({
+            domain: 'example.com'
+        }),
         password: 'testing123'
     };
 
@@ -43,6 +46,18 @@ describe('chatter', function() {
 
     describe('login', function() {
 
+        it('should get a 302 response for login', function(done) {
+            request(app)
+                .get('/login')
+                .auth(object.email, object.password)
+                .expect(302)
+                .end(function(err) {
+                    if (err) throw err;
+                    done();
+                });
+        });
+
+
         it('should be able to get to the profile page for ' + object.email, function(done) {
             request(app)
                 .get('/profile')
@@ -61,6 +76,8 @@ describe('chatter', function() {
         var room = {
             name: Date.now()
         };
+        object.room = room.name;
+        fs.writeFileSync('test.json', JSON.stringify(object));
 
         it('should create a room', function(done) {
             request(app)
@@ -75,10 +92,10 @@ describe('chatter', function() {
                 });
         });
 
-        for(var i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
             it('should add message to room: ' + room.name, function(done) {
                 request(app)
-                    .post('/'+room.name+'/messages')
+                    .post('/' + room.name + '/messages')
                     .send({
                         message: chance.sentence()
                     })
@@ -96,7 +113,7 @@ describe('chatter', function() {
 
         it('should test json route', function(done) {
             request(app)
-                .get('/'+room.name+'/json')
+                .get('/' + room.name + '/json')
                 .auth(object.email, object.password)
                 .expect(200)
                 .end(function(err, res) {

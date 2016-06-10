@@ -4,58 +4,63 @@ var moment = require('moment');
 var chance = require('chance')();
 var ChatModel = require('../../models/chat');
 var UserModel = require('../../models/user');
-var basicAuth = require('basic-auth-connect');
+var basicAuth = require('basic-auth');
+
 
 var isAuthenticated = function(req, res, next) {
-    return basicAuth(function(user, pass, done) {
-        UserModel.findOne({
-            'local.email': user
-        }, function(err, user) {
-            if (err) {
-                return done(err, null);
-            }
-            if (!user || user == null) {
-                return done('No user found.', null);
-            }
-            if (!user.isPassword(pass)) {
-                return done('Oops! Wrong password.', null);
-            } else {
-                req.session.user = user;
-                return done(null, user);
-            }
+    function unauthorized(res) {
+        res.setHeader('WWW-Authenticate', 'Basic realm="Authorization Needed"');
+        res.status(401);
+        res.render('error', {
+            title: 'Internal Service Error',
+            error: 'Your account could not be authenticated'
         });
-    })(req, res, next);
+    }
+
+    var auth = basicAuth(req);
+
+    if (!auth || !auth.name || !auth.pass) {
+        return unauthorized(res);
+    }
+
+    UserModel.findOne({
+        'local.email': auth.name
+    }, function(err, user) {
+        if (err || !user || user == null || (user && !user.isPassword(auth.pass))) {
+            unauthorized(res);
+        } else {
+            req.session.user = user;
+            req.user = user;
+            return next();
+        }
+    });
 };
 
 module.exports = function(app, io) {
     app.get('/', function(req, res) {
         res.render('home', req.session);
     });
-    app.get('/login', function(req, res, next) {
-        if(!req.session.created) {
-            req.session.created = true;
-            res.setHeader('WWW-Authenticate', 'Basic realm="Authorization Needed"');
-            res.sendStatus(401);
-        } else {
-            next();
-        }
-    },  isAuthenticated, function(req, res) {
+    app.get('/login', isAuthenticated, function(req, res) {
         res.redirect('/profile');
     });
     app.get('/logout', function(req, res) {
-        delete req.headers['authorization'];
         req.session.destroy(function() {
-            res.redirect('/');
+            res.status(401);
+            res.render('error', {
+                title: 'You have been logged out',
+                error: ''
+            });
         });
     });
     app.get('/register', function(req, res) {
         var error = req.query.error;
-        res.render('register', {error: error});
+        res.render('register', {
+            error: error
+        });
     });
     app.post('/register', function(req, res) {
         var email = req.body.email;
         var password = req.body.password;
-
         UserModel.findOne({
             'local.email': email
         }, function(err, _user) {
@@ -70,7 +75,9 @@ module.exports = function(app, io) {
                 user.local.email = email;
                 user.local.password = user.generateHash(password);
                 user.settings = {};
-                user.settings.color = chance.color({format: 'hex'});
+                user.settings.color = chance.color({
+                    format: 'hex'
+                });
                 user.save(function(err) {
                     if (err) {
                         throw err;
@@ -103,11 +110,13 @@ module.exports = function(app, io) {
     app.post('/:name/messages', isAuthenticated, function(req, res) {
         var room = req.params.name;
         var message = req.body.message;
-        if(room && message) {
+        if (room && message) {
             ChatModel.findOne({
                 name: room
             }, function(err, chat) {
-                if(err) { res.sendStatus(500); }
+                if (err) {
+                    res.sendStatus(500);
+                }
                 var data = {
                     username: req.session.user.username,
                     message: message,
@@ -115,7 +124,7 @@ module.exports = function(app, io) {
                 };
                 chat.messages.push(data);
                 chat.save(function(err) {
-                    if(err) {
+                    if (err) {
                         res.send({
                             error: err
                         });
@@ -139,7 +148,9 @@ module.exports = function(app, io) {
         var name = req.body.name;
         var user_id = req.user.id;
         if (name && user_id) {
-            ChatModel.createRoom(name, user_id, chance.color({format: 'hex'}), function(err) {
+            ChatModel.createRoom(name, user_id, chance.color({
+                format: 'hex'
+            }), function(err) {
                 if (err) {
                     res.render('roomCreate', {
                         user: req.session.user,
@@ -202,7 +213,7 @@ module.exports = function(app, io) {
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
-            if(!chat) {
+            if (!chat) {
                 openBadge({
                     text: ['chatter', 'room does not exist'],
                     color: {
@@ -240,7 +251,7 @@ module.exports = function(app, io) {
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
-            if(!chat) {
+            if (!chat) {
                 openBadge({
                     text: ['chatter', 'room does not exist'],
                     color: {
@@ -273,7 +284,7 @@ module.exports = function(app, io) {
             }
         });
     });
-    app.get('/:room', isAuthenticated, function(req, res) {
+    app.get('/:room', function(req, res) {
         var room = req.params.room;
         ChatModel.findOne({
             name: room
@@ -284,7 +295,7 @@ module.exports = function(app, io) {
                     messages: chat.messages,
                     room: room,
                     user: req.user,
-                    owner: (chat.owners.indexOf(req.user.id) > -1)
+                    owner: req.user ? (chat.owners.indexOf(req.user.id) > -1) : false
                 });
             } else {
                 res.render('404', {
@@ -317,17 +328,19 @@ module.exports = function(app, io) {
                 var feed = new RSS({
                     title: room,
                     description: 'description',
-                    feed_url: 'http://'+req.headers.host + req.originalUrl + '/rss',
-                    site_url: 'http://'+req.headers.host
+                    feed_url: 'http://' + req.headers.host + req.originalUrl + '/rss',
+                    site_url: 'http://' + req.headers.host
                 });
                 chat.messages.forEach(function(message) {
                     feed.item({
-                        title:  message.message,
+                        title: message.message,
                         author: message.username,
                         date: moment(message.date).format()
                     });
                 });
-                var xml = feed.xml({indent: true});
+                var xml = feed.xml({
+                    indent: true
+                });
                 res.send(xml);
             } else {
                 res.render('404', {

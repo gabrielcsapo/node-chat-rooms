@@ -1,6 +1,8 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-screenshot');
 
+    var user = require('./test.json');
+
     grunt.initConfig({
         screenshot: {
             home: {
@@ -36,8 +38,8 @@ module.exports = function(grunt) {
                         dest: '404.png',
                         delay: 100,
                         basicAuth: {
-                            username: 'root@gmail.com',
-                            password: 'test123'
+                            username: user.email,
+                            password: user.password
                         }
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
@@ -48,9 +50,13 @@ module.exports = function(grunt) {
                     path: './screenshot/room/AuthNeeded',
                     files: [{
                         type: 'remote',
-                        src: 'http://localhost:3000/testing',
+                        src: 'http://localhost:3000/' + user.room,
                         dest: 'AuthNeeded.png',
-                        delay: 100
+                        delay: 100,
+                        basicAuth: {
+                            username: '',
+                            password: ''
+                        }
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
                 }
@@ -60,12 +66,12 @@ module.exports = function(grunt) {
                     path: './screenshot/room',
                     files: [{
                         type: 'remote',
-                        src: 'http://localhost:3000/testing',
+                        src: 'http://localhost:3000/' + user.room,
                         dest: 'room.png',
                         delay: 500,
                         basicAuth: {
-                            username: 'root@gmail.com',
-                            password: 'test123'
+                            username: user.email,
+                            password: user.password
                         }
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
@@ -80,8 +86,8 @@ module.exports = function(grunt) {
                         dest: 'profile.png',
                         delay: 500,
                         basicAuth: {
-                            username: 'root@gmail.com',
-                            password: 'test123'
+                            username: user.email,
+                            password: user.password
                         }
                     }],
                     viewport: ['1920x1080', '1024x768', '640x960', '320x480']
@@ -89,4 +95,5 @@ module.exports = function(grunt) {
             }
         }
     });
+    grunt.registerTask('default', ['screenshot']);
 };
