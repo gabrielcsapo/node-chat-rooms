@@ -8,29 +8,6 @@ html
                 width: 50%;
                 margin: 0 auto;
             }
-            input {
-                display: block;
-                margin: 0;
-                width: 100%;
-                font-family: sans-serif;
-                font-size: 18px;
-                appearance: none;
-                box-shadow: none;
-                border-radius: none;
-            }
-            input[type="text"]:focus {
-                outline: none;
-            }
-            input {
-                padding: 10px;
-                border: none;
-                border-bottom: solid 2px #c9c9c9;
-                transition: border 0.3s;
-            }
-            input:focus, input.focus {
-                outline: none;
-                border-bottom: solid 2px #969696;
-            }
     body
         include templates/header.pug
 
@@ -39,6 +16,7 @@ html
             form(id="createRoom" action="/room/create" method="POST")
                 if(error)
                     div.alert.alert-danger=error
+                    br
                 input(id="room" name="name" placeholder="room" autocomplete="off")
                 br
                 button(id="btnCreate" class="btn btn-primary" style="float:right;") Create
