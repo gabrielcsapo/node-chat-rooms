@@ -21,9 +21,9 @@ var createRoom = function(username, room) { // eslint-disable-line no-unused-var
     });
     socket.on(room + ':connection', function(data) {
         var message = document.createElement('LI');
-        message.innerHTML= '<div style="display:block;margin-bottom:10px;" class="text-center text-info">' +
+        message.innerHTML= '<i style="display:block;margin-bottom:10px;" class="text-center text-default">' +
             data.username + ' has connected' +
-        '</div>';
+        '</i>';
         document.getElementById('messages').appendChild(message);
     });
     document.querySelector('#chat').addEventListener('submit', function(e) {

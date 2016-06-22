@@ -9,6 +9,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/home',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000',
                         dest: 'home.png',
@@ -21,6 +23,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/register',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000/register',
                         dest: 'register.png',
@@ -33,6 +37,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/404',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000/404',
                         dest: '404.png',
@@ -49,6 +55,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/room/AuthNeeded',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000/' + user.room,
                         dest: 'AuthNeeded.png',
@@ -65,6 +73,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/room',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000/' + user.room,
                         dest: 'room.png',
@@ -81,6 +91,8 @@ module.exports = function(grunt) {
                 options: {
                     path: './screenshot/profile',
                     files: [{
+                        parallel: true,
+                        compress: true,
                         type: 'remote',
                         src: 'http://localhost:3000/profile',
                         dest: 'profile.png',

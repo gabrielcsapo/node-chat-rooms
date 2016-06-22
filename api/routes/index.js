@@ -284,12 +284,12 @@ module.exports = function(app, io) {
             }
         });
     });
-    app.get('/:room', function(req, res) {
+    app.get('/:room', isAuthenticated, function(req, res) {
         var room = req.params.room;
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
-            if (chat) {
+            if (chat && !err) {
                 res.render('room', {
                     title: room,
                     messages: chat.messages,
