@@ -9,43 +9,9 @@
 
 > open chat rooms for the masses :monkey:
 
-# routes
-
-- `GET /{room}.svg`
-    - (renders a badge that shows room name)
-- `GET /{room}/count.svg`
-    - (renders a badge with the amount of message in a chat room)
-- `GET /{room}`
-    - (renders the chat room window)
-- `GET /{room}/json`
-    -
-    ```json
-        {
-            "title": "testing",
-            "messages": [{
-                "message": "does this work?",
-                "username": "root",
-                "date": "2016-06-07 18:34"
-            }, {
-                "message": "oh great?",
-                "username": "root",
-                "date": "2016-06-07 18:34"
-            }, {
-                "message": "this is awesome",
-                "username": "root",
-                "date": "2016-06-07 18:40"
-            }],
-            "room": "testing"
-        }
-    ```
-- `POST /{room}/messages`
-    - `example`
-        - `curl -u root@gmail.com:test123 http://localhost:3000/testing/messages --data "message=this is a message"`
-
 # install
 
 `npm install`
-
 
 ## Dependencies
 
@@ -54,6 +20,8 @@
 ### OSX
 
 > `brew install mongo;`
+
+## [/docs](./docs/node-chat-rooms/0.1.1)
 
 ## tests
 
