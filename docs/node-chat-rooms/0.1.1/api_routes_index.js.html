@@ -1,4 +1,51 @@
-var openBadge = require('openbadge');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>api/routes/index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Routes.html">Routes</a><ul class='methods'><li data-type='method'><a href="module-Routes.html#~GET/rendersthehomeroute">GET /
+renders the home route</a></li><li data-type='method'><a href="module-Routes.html#~GET/:room">GET /:room</a></li><li data-type='method'><a href="module-Routes.html#~GET/:room/json">GET /:room/json</a></li><li data-type='method'><a href="module-Routes.html#~GET/:room/messages">GET /:room/messages</a></li><li data-type='method'><a href="module-Routes.html#~GET/:room/rss">GET /:room/rss</a></li><li data-type='method'><a href="module-Routes.html#~GET/:room/settings">GET /:room/settings</a></li><li data-type='method'><a href="module-Routes.html#~GET/loginRenderstheloginscreenIftheuserisloggedin,redirectstoprofile">GET /login
+Renders the login screen
+If the user is logged in, redirects to profile</a></li><li data-type='method'><a href="module-Routes.html#~GET/logoutLogstheuserout">GET /logout
+Logs the user out</a></li><li data-type='method'><a href="module-Routes.html#~GET/profileUsestheloggedinusersidtopainttheprofilescreen">GET /profile
+Uses the logged in users id to paint the profile screen</a></li><li data-type='method'><a href="module-Routes.html#~GET/registerPaintstheregisterscreen">GET /register
+Paints the register screen</a></li><li data-type='method'><a href="module-Routes.html#~GET/room/createShowsapagetocreateanewroom">GET /room/create
+Shows a page to create a new room</a></li><li data-type='method'><a href="module-Routes.html#~GET/user/:username/avatar">GET /user/:username/avatar</a></li><li data-type='method'><a href="module-Routes.html#~POST/:room/settings">POST /:room/settings</a></li><li data-type='method'><a href="module-Routes.html#~POST/register">POST /register</a></li><li data-type='method'><a href="module-Routes.html#~POST/room/create">POST /room/create</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">api/routes/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var openBadge = require('openbadge');
 var RSS = require('rss');
 var moment = require('moment');
 var chance = require('chance')();
@@ -25,7 +72,7 @@ var isAuthenticated = function(req, res, next) {
     UserModel.findOne({
         'local.email': auth.name
     }, function(err, user) {
-        if (err || !user || user == null || (user && !user.isPassword(auth.pass))) {
+        if (err || !user || user == null || (user &amp;&amp; !user.isPassword(auth.pass))) {
             unauthorized(res);
         } else {
             req.session.user = user;
@@ -140,7 +187,7 @@ module.exports = function(app, io) {
             username: username
         }, function(err, user) {
             res.set('Content-Type', 'image/svg+xml');
-            res.send('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100"><rect fill="' + user[0].settings.color + '" x="0" y="0" width="100" height="100"/></svg>');
+            res.send('&lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100">&lt;rect fill="' + user[0].settings.color + '" x="0" y="0" width="100" height="100"/>&lt;/svg>');
         });
     });
     /**
@@ -151,7 +198,7 @@ module.exports = function(app, io) {
     app.post('/:room/messages', isAuthenticated, function(req, res) {
         var room = req.params.room;
         var message = req.body.message;
-        if (room && message) {
+        if (room &amp;&amp; message) {
             ChatModel.findOne({
                 name: room
             }, function(err, chat) {
@@ -196,7 +243,7 @@ module.exports = function(app, io) {
     app.post('/room/create', isAuthenticated, function(req, res) {
         var name = req.body.name;
         var user_id = req.user.id;
-        if (name && user_id) {
+        if (name &amp;&amp; user_id) {
             ChatModel.createRoom(name, user_id, chance.color({
                 format: 'hex'
             }), function(err) {
@@ -361,7 +408,7 @@ module.exports = function(app, io) {
         ChatModel.findOne({
             name: room
         }, function(err, chat) {
-            if (chat && !err) {
+            if (chat &amp;&amp; !err) {
                 res.render('room', {
                     title: room,
                     messages: chat.messages,
@@ -456,3 +503,22 @@ module.exports = function(app, io) {
         });
     });
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 16:21:16 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

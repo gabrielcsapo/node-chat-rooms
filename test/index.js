@@ -46,7 +46,7 @@ describe('chatter', function() {
 
     describe('login', function() {
 
-        it('should get a 302 response for login', function(done) {
+        it('should get a 302 response for login (' + object.email + ' , ' + object.password + ')' , function(done) {
             request(app)
                 .get('/login')
                 .auth(object.email, object.password)
