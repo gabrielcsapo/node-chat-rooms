@@ -12,9 +12,11 @@
 # start
 
 > dev
+
 `MONGO_URL=# npm start`
 
 > docker
+
 `docker-compose up`
 
 # install
@@ -24,12 +26,6 @@
 ## Dependencies
 
 - mongodb
-
-### OSX
-
-> `brew install mongo;`
-
-## [/docs](./docs/node-chat-rooms/0.1.1)
 
 ## tests
 
