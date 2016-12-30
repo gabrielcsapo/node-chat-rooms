@@ -13,7 +13,7 @@
 
 > dev
 
-`MONGO_URL=# npm start`
+`MONGO_URL=mongodb://localhost:27017/chatter npm start`
 
 > docker
 
