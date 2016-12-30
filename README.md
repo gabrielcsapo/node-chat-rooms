@@ -9,6 +9,14 @@
 
 > open chat rooms for the masses :monkey:
 
+# start
+
+> dev
+`MONGO_URL=# npm start`
+
+> docker
+`docker-compose up`
+
 # install
 
 `npm install`

@@ -4,6 +4,8 @@ var chance = require('chance')();
 var fs = require('fs');
 
 describe('chatter', function() {
+    process.env.MONGO_URL = 'mongodb://localhost:27017/chatter';
+    
     var app = require('../index.js');
 
     describe('pages', function() {

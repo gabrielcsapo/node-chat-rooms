@@ -10,7 +10,9 @@ var db = mongoose.connection;
 
 db.on('error', function(err) { throw err; });
 
-mongoose.connect('mongodb://localhost:27017/chatter');
+var uri = process.env.MONGO_URL;
+
+mongoose.connect(uri.toString());
 
 app.use(cookieParser());
 app.use(bodyParser.json());
