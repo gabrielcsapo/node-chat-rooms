@@ -19,8 +19,8 @@
         ],
         "no-console": 1
     },
-    globals: {
-      define: true
+    "globals": {
+      "define": true
     },
     "env": {
         "node": true,
