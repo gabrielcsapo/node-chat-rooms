@@ -24,21 +24,21 @@
     "moment": "^2.15.2",
     "mongoose": "^4.6.5",
     "openbadge": "^1.0.3",
-    "psychic-ui": "^0.4.0",
+    "psychic-ui": "^1.0.7",
     "pug": "^2.0.0-beta2",
     "rss": "^1.2.1",
-    "socket.io": "^1.5.1",
+    "socket.io": "^2.0.3",
     "socket.io-events": "^0.4.6",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "eslint": "^3.8.1",
+    "chai": "^4.1.0",
+    "eslint": "^4.2.0",
     "grunt": "^1.0.1",
     "grunt-screenshot": "^0.6.0",
     "jsdoc": "^3.4.2",
     "minami": "^1.1.1",
     "mocha": "^3.1.2",
-    "supertest": "^2.0.1"
+    "supertest": "^3.0.0"
   }
 }
