@@ -1,5 +1,7 @@
 # node-chat-rooms
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/gabrielcsapo/node-chat-rooms.svg)](https://greenkeeper.io/)
+
 [![Npm Version](https://img.shields.io/npm/v/node-chat-rooms.svg)](https://www.npmjs.com/package/node-chat-rooms)
 [![Build Status](https://travis-ci.org/gabrielcsapo/node-chat-rooms.svg?branch=master)](https://travis-ci.org/gabrielcsapo/node-chat-rooms)
 [![Dependency Status](https://david-dm.org/gabrielcsapo/node-chat-rooms.svg)](https://david-dm.org/gabrielcsapo/node-chat-rooms)
