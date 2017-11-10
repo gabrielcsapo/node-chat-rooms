@@ -2,7 +2,7 @@ html
     head
         title=title
         style
-            include  ../node_modules/psychic-ui/dist/psychic.css
+            include  ../node_modules/psychic.css/dist/psychic.min.css
         style.
              .list-item-right {
                  max-width: 80%;
@@ -41,7 +41,7 @@ html
 
                         script
                             include assets/js/room.js
-                        script.
+                        script(type='text/javascript').
                             createRoom("#{user.username}", "#{room}")
 
                         div(class="navbar navbar-center" style="bottom:0;")

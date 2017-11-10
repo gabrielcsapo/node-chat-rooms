@@ -1,30 +1,35 @@
+style.
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+  * { 
+    font-family: 'Open Sans', sans-serif;
+  }
 div(class="navbar navbar-center")
     div(class="container")
         div(class="navbar-title")
             span
                 a(href="/" class="text-black") node-chat-rooms
-        div(class="navbar-content")
-            div(class="nav")
-                if(!user)
-                    a(class="text-black" href="/login") Login
-                    a(class="text-black" href="/register") Register
-                else
-                    a(class="text-black" href="/room/create") Create a Room
-                    a(class="text-black" href="/profile") Profile
-                    a(class="text-black" id="logout" href="/logout") Logout
-                    b(class="text-black" style="margin-left:10px;")=user.username
-                    script.
-                        document.getElementById('logout').onclick = function(event) {
-                            var str = location.href.replace("http://", "http://" + new Date().getTime() + "@") + 'logout';
-                            console.log(str);
-                            var xmlhttp = new XMLHttpRequest;
-                            xmlhttp.onreadystatechange = function() {
-                                if (xmlhttp.readyState == 4) {
-                                    location.href = '/logout';
-                                }
-                            }
-                            xmlhttp.open("GET", str, true);
-                            xmlhttp.setRequestHeader("Authorization", "Basic")
-                            xmlhttp.send();
-                            return false;
-                        }
+        div(class="nav")
+            if(!user)
+                a(class="text-black" href="/login") Login
+                a(class="text-black" href="/register") Register
+            else
+                a(class="text-black" href="/room/create") Create a Room
+                a(class="text-black" href="/profile") Profile
+                a(class="text-black" id="logout" href="/logout") Logout
+                b(class="text-black" style="margin-left:10px;")=user.username
+script(type='text/javascript').
+    document.getElementById('logout').onclick = function(event) {
+        var str = location.href.replace("http://", "http://" + new Date().getTime() + "@") + 'logout';
+        console.log(str);
+        var xmlhttp = new XMLHttpRequest;
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4) {
+                location.href = '/logout';
+            }
+        }
+        xmlhttp.open("GET", str, true);
+        xmlhttp.setRequestHeader("Authorization", "Basic")
+        xmlhttp.send();
+        return false;
+    }

@@ -2,7 +2,7 @@ html
     head
         title Login
         style
-            include  ../node_modules/psychic-ui/dist/psychic.css
+            include  ../node_modules/psychic.css/dist/psychic.min.css
         style.
             form {
                 width: 50%;
@@ -21,7 +21,7 @@ html
                 br
                 button(id="btnCreate" class="btn btn-primary" style="float:right;") Create
 
-            script.
+            script(type='text/javascript').
                 document.getElementById('createRoom').onkeydown = function(e) {
                     e.preventDefault;
                     if (e.keyCode == 13) {

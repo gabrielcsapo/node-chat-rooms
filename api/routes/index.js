@@ -17,7 +17,7 @@ var isAuthenticated = function(req, res, next) {
     }
 
     var auth = basicAuth(req);
-
+    
     if (!auth || !auth.name || !auth.pass) {
         return unauthorized(res);
     }

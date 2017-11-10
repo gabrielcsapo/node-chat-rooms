@@ -1,44 +1,46 @@
 {
   "name": "node-chat-rooms",
-  "version": "0.1.1",
-  "description": "open chat rooms for the masses 🐒",
+  "version": "0.1.2",
+  "description": "🐒 open chat rooms for the masses",
+  "author": "Gabriel Csapo <gacsapo@gmail.com>",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
     "start": "node . | bunyan -o short",
     "clean": "mongo chatter --eval 'db.dropDatabase()'",
-    "test": "./node_modules/.bin/eslint .;./node_modules/.bin/mocha;",
-    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
+    "test": "eslint .; mocha test;",
+    "generate-docs": "tryitout --output=./docs --template=landing && jsdoc --configure .jsdoc.json --verbose"
   },
-  "author": "Gabriel Csapo <gacsapo@paypalcorp.com>",
-  "license": "ISC",
+  "bin": {
+    "node-chat-rooms": "./bin/index.js"
+  },
   "dependencies": {
-    "basic-auth": "^1.0.4",
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.15.2",
-    "bunyan": "^1.8.3",
-    "chance": "^1.0.4",
+    "basic-auth": "^2.0.0",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "bunyan": "^1.8.12",
+    "chance": "^1.0.12",
     "cookie-parser": "^1.4.3",
-    "express": "^4.14.0",
-    "express-session": "^1.14.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "font-awesome": "^4.7.0",
-    "moment": "^2.15.2",
-    "mongoose": "^4.6.5",
+    "moment": "^2.19.1",
+    "mongoose": "^4.13.1",
     "openbadge": "^1.0.3",
-    "psychic-ui": "^1.0.7",
+    "psychic.css": "0.0.1",
     "pug": "^2.0.0-beta2",
-    "rss": "^1.2.1",
-    "socket.io": "^2.0.3",
+    "rss": "^1.2.2",
+    "socket.io": "^2.0.4",
     "socket.io-events": "^0.4.6",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
-    "eslint": "^4.2.0",
-    "grunt": "^1.0.1",
-    "grunt-screenshot": "^0.6.0",
-    "jsdoc": "^3.4.2",
-    "minami": "^1.1.1",
-    "mocha": "^3.1.2",
-    "supertest": "^3.0.0"
+    "chai": "^4.1.2",
+    "eslint": "^4.10.0",
+    "jsdoc": "^3.5.5",
+    "minami": "^1.2.3",
+    "mocha": "^4.0.1",
+    "supertest": "^3.0.0",
+    "tryitout": "^1.0.2"
   }
 }

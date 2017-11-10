@@ -5,8 +5,14 @@ var fs = require('fs');
 
 describe('chatter', function() {
     process.env.MONGO_URL = 'mongodb://localhost:27017/chatter';
-    
+
     var app = require('../index.js');
+
+    after(function() {
+      app.close(function(){
+          process.exit();
+      });
+    });
 
     describe('pages', function() {
 

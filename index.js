@@ -34,4 +34,4 @@ server.listen(port, function() {
     logger.info('chatter listening on http://localhost:%s', port);
 });
 
-module.exports = app;
+module.exports = server;
