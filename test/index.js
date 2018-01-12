@@ -9,9 +9,9 @@ describe('chatter', function() {
     var app = require('../index.js');
 
     after(function() {
-      app.close(function(){
-          process.exit();
-      });
+        app.close(function(){
+            process.exit();
+        });
     });
 
     describe('pages', function() {
